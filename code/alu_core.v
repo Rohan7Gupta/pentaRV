@@ -30,16 +30,7 @@ output branch;
    wire [31:0] shifter = $signed({aluOP[3] & aluIn1[31], shifter_in}) >>> aluIn2[4:0];
 
    wire [31:0] leftshift = flip32(shifter);
-   
 
-   
-   // ADD/SUB/ADDI: 
-   // funct7[5] is 1 for SUB and 0 for ADD. We need also to test instr[5]
-   // to make the difference with ADDI
-   //
-   // SRLI/SRAI/SRL/SRA: 
-   // funct7[5] is 1 for arithmetic shift (SRA/SRAI) and 
-   // 0 for logical shift (SRL/SRLI)
    reg [31:0]  aluOut;
    always @(*) begin
    case(aluOP)
