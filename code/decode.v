@@ -11,18 +11,20 @@ input [4:0] rdW;
 input [31:0] instrD,PCD,PCplus4D,resultW;
 
 //control
-output strCtrlE,RegWriteE,MemWriteE,PCBranchE,SrcASelE,SrcBSelE; 
-output [1:0] MemtoRegE;
-output [2:0] ALUopE;
+output RegWriteE,MemWriteE,PCBranchE,MemtoRegE,SrcBSelE; 
+output [1:0] SrcASelE;
+output [3:0] ALUopE;
+output [2:0] strCtrlE;
 
 //data path
 output [31:0] immE,PCE,r1E,r2E;
 output [4:0] rdE;
 
 //internal wire control
-wire immSelD;
-wire strCtrlD,RegWriteD,MemWriteD,PCBranchD,SrcASelD,SrcBSelD,MemtoRegD;
-wire [2:0] ALUopD;
+wire [2:0]immSelD,strCtrlD;
+wire RegWriteD,MemWriteD,PCBranchD,SrcBSelD,MemtoRegD;
+wire [3:0] ALUopD;
+wire [1:0] SrcASelD;
 
 //internal wire data path
 wire [31:0] immD,r1D,r2D;
@@ -30,10 +32,12 @@ wire [31:0] immD,r1D,r2D;
 // assign rdD=instrD[11:7];
 
 //pipeline registers
-reg reg_strCtrlD,reg_RegWriteD,reg_MemWriteD,reg_MemtoRegD,reg_PCBranchD,reg_SrcASelD,reg_SrcBSelD;
-reg [2:0] reg_ALUopD;
+reg reg_RegWriteD,reg_MemWriteD,reg_MemtoRegD,reg_PCBranchD,reg_SrcBSelD;
+reg [3:0] reg_ALUopD;
 reg [31:0] reg_r1D,reg_r2D,reg_immD,reg_PCD;
 reg [4:0] reg_rdD;
+reg [1:0] reg_SrcASelD;
+reg [2:0] reg_strCtrlD;
 
 
 RegFile regs(
@@ -55,10 +59,10 @@ immGen immG(
 );
 
 Control control(
-    .opcode(InstrD[6:0]),
-    .funct3(InstrD[14:12]),
-    .funct7(InstrD[31:25]),
-    .strCtrlD(immSelD),
+    .opcode(instrD[6:0]),
+    .funct3(instrD[14:12]),
+    .funct7(instrD[31:25]),
+    .strCtrlD(strCtrlD),
     .RegWriteD(RegWriteD),
     .MemWriteD(MemWriteD),
     .PCBranchD(PCBranchD),
@@ -73,13 +77,13 @@ Control control(
     always @(posedge clk or negedge rst) begin
         if(rst) begin
             reg_RegWriteD <= 1'b0;
-            reg_SrcASelD <= 1'b0;
+            reg_SrcASelD <= 2'b00;
             reg_SrcBSelD <= 1'b0;
             reg_MemWriteD <= 1'b0;
             reg_MemtoRegD <= 1'b0;
             reg_PCBranchD <= 1'b0;
-            reg_ALUopD <= 3'b000;
-            reg_strCtrlD <= 1'b0;
+            reg_ALUopD <= 4'b0000;
+            reg_strCtrlD <= 3'b000;
             reg_r1D <= 32'h00000000; 
             reg_r2D <= 32'h00000000; 
             reg_immD <= 32'h00000000;
@@ -99,7 +103,7 @@ Control control(
             reg_r1D <= r1D; 
             reg_r2D <= r2D; 
             reg_immD <= immD;
-            reg_rdD <= instr[11:7];
+            reg_rdD <= instrD[11:7];
             reg_PCD <= PCD;
         end
     end
