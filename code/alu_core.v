@@ -1,9 +1,8 @@
 //This alu is used for execute, fetch,branch, jump, load & store 
 `include "defines.v"
-module alu_core(aluIn1,aluIn2,funct7b5,isR,aluOP,aluOut,branch);
+module alu_core(aluIn1,aluIn2,aluOP,aluOut,branch);
 input [31:0] aluIn1,aluIn2;
-input funct7b5,isR;//bit5 of funct7
-input [2:0] aluOP;
+input [3:0] aluOP;
 output [31:0] aluOut;
 output branch;
 
@@ -28,7 +27,7 @@ output branch;
 
    wire [31:0] shifter_in = (aluOP == 3'b001) ? flip32(aluIn1) : aluIn1;
    
-   wire [31:0] shifter = $signed({funct7b5 & aluIn1[31], shifter_in}) >>> aluIn2[4:0];
+   wire [31:0] shifter = $signed({aluOP[3] & aluIn1[31], shifter_in}) >>> aluIn2[4:0];
 
    wire [31:0] leftshift = flip32(shifter);
    
@@ -43,16 +42,18 @@ output branch;
    // 0 for logical shift (SRL/SRLI)
    reg [31:0]  aluOut;
    always @(*) begin
-      case(aluOP)
-	`ADD: aluOut = (funct7b5 & isR) ? aluMinus[31:0] : aluPlus; //add/sub/addi
+   case(aluOP)
+	`ADD: aluOut = aluPlus; //add/sub/addi
 	`SLL: aluOut = leftshift;
 	`SLT: aluOut = {31'b0, LT};
 	`SLTU: aluOut = {31'b0, LTU};
 	`XOR: aluOut = (aluIn1 ^ aluIn2);
 	`SRL: aluOut = shifter;
+   `SRA: aluOut = shifter;
 	`OR: aluOut = (aluIn1 | aluIn2);
-	`AND: aluOut = (aluIn1 & aluIn2);	
-      endcase
+	`AND: aluOut = (aluIn1 & aluIn2);
+   `SUB: aluOut = aluMinus;	
+   endcase
    end
 
    // The predicate for branch instructions

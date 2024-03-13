@@ -1,11 +1,13 @@
-`define     ADD          3'b000  // add/sub/addi
-`define     SLL          3'b001  //slli    
-`define     SLT          3'b010  //slti    
-`define     SLTU         3'b011  //sltui    
-`define     XOR          3'b100  //xori    
-`define     SRL          3'b101  //srl/sra/srli,srai    
-`define     OR           3'b110   //ori   
-`define     AND          3'b111  //andi
+`define     ADD          4'b0000    //add
+`define     SLL          4'b0001    //sll   
+`define     SLT          4'b0010    //slt   
+`define     SLTU         4'b0011    //sltu    
+`define     XOR          4'b0100    //xor   
+`define     SRL          4'b0101    //srl   
+`define     OR           4'b0110    //or  
+`define     AND          4'b0111    //and
+`define     SUB          4'b1000    //sub
+`define     SRA          4'b1101    //sra
 
 `define     LSB          3'b000
 `define     LSH          3'b001
