@@ -48,16 +48,16 @@ output branch;
    end
 
    // The predicate for branch instructions
-   reg takeBranch;
+   reg branch;
    always @(*) begin
       case(aluOP)
-	`BEQ: takeBranch = EQ;
-	`BNE: takeBranch = !EQ;
-	`BLT: takeBranch = LT;
-	`BGE: takeBranch = !LT;
-	`BLTU: takeBranch = LTU;
-	`BGEU: takeBranch = !LTU;
-	default: takeBranch = 1'b0;
+	`BEQ: branch = EQ;
+	`BNE: branch = !EQ;
+	`BLT: branch = LT;
+	`BGE: branch = !LT;
+	`BLTU: branch = LTU;
+	`BGEU: branch = !LTU;
+	default: branch = 1'b0;
       endcase
    end
 endmodule
