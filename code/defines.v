@@ -15,12 +15,12 @@
 `define     LSBU         3'b100
 `define     LSHU         3'b101
 
-`define     BEQ          3'b000
-`define     BNE          3'b001
-`define     BLT          3'b100
-`define     BGE          3'b101
-`define     BLTU         3'b110
-`define     BGEU         3'b111
+`define     BEQ          4'b0000
+`define     BNE          4'b0001
+`define     BLT          4'b0100
+`define     BGE          4'b0101
+`define     BLTU         4'b0110
+`define     BGEU         4'b0111
 
 `define     SB           3'b000
 `define     SH           3'b001

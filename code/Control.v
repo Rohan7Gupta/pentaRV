@@ -22,7 +22,7 @@ assign PCBranchD = (opcode == `Branch | opcode == `JAL | opcode == `JALR) ? 1'b1
 
 assign strCtrlD = funct3;
 
-assign ALUopD = (opcode == `Load | opcode == `JAL | opcode == `JALR | opcode == `AUIPC | 
-                                opcode == `LUI ) ? 4'b0000 : {funct7[5],funct3};
+assign ALUopD = (opcode == `ALUimm | opcode == `Branch ) ? {1'b0,funct3} : 
+                                ((opcode == `ALUreg ) ? {funct7[5],funct3} : 4'b0000);
 
 endmodule
