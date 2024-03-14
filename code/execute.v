@@ -20,10 +20,53 @@ output [31:0] ALUoutM, PCplusImmM, r2M;
 wire [31:0] srcA,srcB, ALUoutE, PCplusImmE;
 wire branchE;
 
+
+
 //pipeline register
-reg reg_RegWriteM,reg_MemWriteM,reg_MemtoRegM,reg_PCBranchM,reg_branchM;
-reg [2:0]reg_strCtrlM;
-reg [4:0]reg_rdM;
-reg [31:0]reg_ALUoutM,reg_PCplusImmM,reg_r2M; 
+reg reg_RegWriteE,reg_MemWriteE,reg_MemtoRegE,reg_PCBranchE,reg_branchE;
+reg [2:0]reg_strCtrlE;
+reg [4:0]reg_rdE;
+reg [31:0]reg_ALUoutE,reg_PCplusImmE,reg_r2E; 
+
+always @(posedge clk or negedge rst) begin
+        if(rst) begin
+            reg_RegWriteE <= 1'b0;
+            reg_MemWriteE <= 1'b0;
+            reg_MemtoRegE <= 1'b0;
+            reg_PCBranchE <= 1'b0;
+            reg_branchE <= 1'b0;
+            reg_strCtrlE <= 3'b000;
+            reg_rdE <= 5'h00;
+            reg_PCplusImmE <= 32'h00000000; 
+            reg_r2E <= 32'h00000000;
+            reg_ALUoutE <= 32'h00000000;
+
+        end
+        else begin
+            reg_RegWriteE <= RegWriteE;
+            reg_MemWriteE <= MemWriteE;
+            reg_MemtoRegE <= MemtoRegE;
+            reg_PCBranchE <= PCBranchE;
+            reg_branchE <= branchE;
+            reg_strCtrlE <= strCtrlE;
+            reg_rdE <= rdE;
+            reg_PCplusImmE <= PCplusImmE; 
+            reg_r2E <= r2E;
+            reg_ALUoutE <= ALUoutE;
+        end
+    end
+
+
+assign strCtrlM = reg_strCtrlE;
+assign RegWriteM = reg_RegWriteE;
+assign MemWriteM = reg_MemWriteE;
+assign PCBranchM = reg_PCBranchE;
+assign branchM = reg_branchE;
+assign MemtoRegM = reg_MemtoRegE;
+assign r2M = reg_r2E;
+assign rdM = reg_rdE;
+assign PCplusImmM = reg_PCplusImmE;
+assign ALUoutM = reg_ALUoutE;
+
 
 endmodule
