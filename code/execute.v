@@ -21,7 +21,8 @@ wire [31:0] srcA,srcB, ALUoutE, PCplusImmE;
 wire branchE;
 
 assign PCplusImmE  = PCE + immE;
-assign srcA = (SrcASelE[1]) ? ((SrcASelE[0]) ? 32'b0 : r1E) : ((SrcASelE[0]) ? 32'b0 : PCE) ;
+assign srcA = (SrcASelE[1]) ? ((SrcASelE[0]) ? r1E : 32'bz) : ((SrcASelE[0]) ? 32'b0 : PCE) ;
+assign srcB = (SrcBSelE) ? immE : r2E;
 
 //pipeline register
 reg reg_RegWriteE,reg_MemWriteE,reg_MemtoRegE,reg_PCBranchE,reg_branchE;

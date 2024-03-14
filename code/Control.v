@@ -15,7 +15,7 @@ output [1:0] SrcASelD; //implement 00 -> jal,jalr,auipc, 01 ->lui, 11->rs1
 assign RegWriteD = (opcode == `Load | opcode == `ALUreg | opcode == `ALUimm ) ? 1'b1 : 1'b0 ;
 assign SrcBSelD = (opcode == `Load | opcode == `Store | opcode == `ALUimm) ? 1'b1 : 1'b0 ;
 assign SrcASelD = (opcode == `JAL | opcode == `JALR | opcode == `AUIPC) ? 2'b00 : 
-                                        ((opcode == `LUI) ? 2'b01 :  2'b10);  
+                                        ((opcode == `LUI) ? 2'b01 :  2'b11);  
 assign MemWriteD = (opcode == `Store) ? 1'b1 : 1'b0 ;
 assign MemtoRegD = (opcode == `Load) ? 1'b1 : 1'b0 ;
 assign PCBranchD = (opcode == `Branch | opcode == `JAL | opcode == `JALR) ? 1'b1 : 1'b0 ;
