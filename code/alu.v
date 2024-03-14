@@ -1,6 +1,6 @@
 //This alu is used for execute, fetch,branch, jump, load & store 
 `include "defines.v"
-module alu_core(aluIn1,aluIn2,aluOP,aluOut,branch);
+module alu(aluIn1,aluIn2,aluOP,aluOut,branch);
 input [31:0] aluIn1,aluIn2;
 input [3:0] aluOP;
 output [31:0] aluOut;

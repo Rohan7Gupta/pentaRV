@@ -24,6 +24,14 @@ assign PCplusImmE  = PCE + immE;
 assign srcA = (SrcASelE[1]) ? ((SrcASelE[0]) ? r1E : 32'bz) : ((SrcASelE[0]) ? 32'b0 : PCE) ;
 assign srcB = (SrcBSelE) ? immE : r2E;
 
+alu core(
+    .aluIn1(srcA),
+    .aluIn2(srcB),
+    .aluOP(ALUopE),
+    .aluOut(ALUoutE),
+    .branch(branchE)
+);
+
 //pipeline register
 reg reg_RegWriteE,reg_MemWriteE,reg_MemtoRegE,reg_PCBranchE,reg_branchE;
 reg [2:0]reg_strCtrlE;
