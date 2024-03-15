@@ -34,7 +34,7 @@ wire [31:0] resultW;
 //writeback
 fetch fetch_unit(clk,rst,PCsrcM,PCplusImmM,PCD, instrD);
 
-decode decode_gupta(clk,rst, instrD, PCD, RegWriteW, rdW, resultW, strCtrlE, RegWriteE, 
+decode decode_unit(clk,rst, instrD, PCD, RegWriteW, rdW, resultW, strCtrlE, RegWriteE, 
 MemWriteE, MemtoRegE, PCBranchE, ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE);
 
 execute execute_unit(clk,rst,strCtrlE, RegWriteE, MemWriteE, MemtoRegE, PCBranchE, 
