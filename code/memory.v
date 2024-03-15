@@ -1,6 +1,6 @@
 `include "DMEM.v"
 
-module execute(clk, rst, strCtrlM, RegWriteM, MemWriteM, MemtoRegM, PCBranchM,
+module memory(clk, rst, strCtrlM, RegWriteM, MemWriteM, MemtoRegM, PCBranchM,
                 ALUoutM, branchM, PCplusImmM, rdM, r2M, ALUoutW, ReadDataW, rdW, 
                 MemtoRegW, RegWriteW);
 
