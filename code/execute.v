@@ -7,10 +7,10 @@ module execute(clk,rst,strCtrlE, RegWriteE, MemWriteE, MemtoRegE, PCBranchE,
 
 input clk,rst,RegWriteE, MemWriteE, MemtoRegE, PCBranchE, SrcBSelE;
 input [1:0] SrcASelE;
-input [2:0] strCtrlE, immE;
+input [2:0] strCtrlE;
 input [3:0] ALUopE;
 input [4:0] rdE;
-input [31:0] PCE,r1E,r2E;
+input [31:0] immE,PCE,r1E,r2E;
 
 output RegWriteM, MemWriteM, MemtoRegM, PCBranchM, branchM;
 output [2:0] strCtrlM;

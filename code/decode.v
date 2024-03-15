@@ -2,13 +2,13 @@
 `include "immGen.v"
 `include "RegFile.v"
 
-module decode(clk,rst, instrD, PCD, PCplus4D, RegWriteW, rdW, resultW, strCtrlE, RegWriteE, 
+module decode(clk,rst, instrD, PCD, RegWriteW, rdW, resultW, strCtrlE, RegWriteE, 
 MemWriteE, MemtoRegE, PCBranchE, ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE);
 
 //data path
 input clk,rst,RegWriteW;
 input [4:0] rdW;
-input [31:0] instrD,PCD,PCplus4D,resultW;
+input [31:0] instrD,PCD,resultW;
 
 //control
 output RegWriteE,MemWriteE,PCBranchE,MemtoRegE,SrcBSelE; 

@@ -1,9 +1,9 @@
 `include "PC_module.v"
 `include "IMEM.v"
-module fetch(clk,rst,PCsrcM,PCbranchE,PCD, instrD);
+module fetch(clk,rst,PCsrcM,PCplusImmM,PCD, instrD);
 input clk, rst;
 input PCsrcM;
-input [31:0] PCbranchE;
+input [31:0] PCplusImmM;
 output [31:0] instrD, PCD;
 
 wire [31:0] PCF, PCplus4F,instrF, nextPCF, four;
@@ -22,7 +22,7 @@ IMEM imem(
     .readData(instrF)
     );
 
-assign nextPCF = (PCsrcM)? PCbranchE:PCplus4F;
+assign nextPCF = (PCsrcM)? PCplusImmM:PCplus4F;
 assign four = 32'd4;
 assign PCplus4F = PCF + four;
 
