@@ -38,7 +38,7 @@ reg [2:0]reg_strCtrlE;
 reg [4:0]reg_rdE;
 reg [31:0]reg_ALUoutE,reg_PCplusImmE,reg_r2E; 
 
-always @(posedge clk or negedge rst) begin
+always @(posedge clk or posedge rst) begin
         if(rst) begin
             reg_RegWriteE <= 1'b0;
             reg_MemWriteE <= 1'b0;

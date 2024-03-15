@@ -74,7 +74,7 @@ Control control(
 );
 
 //pipeline registers
-    always @(posedge clk or negedge rst) begin
+    always @(posedge clk or posedge rst) begin
         if(rst) begin
             reg_RegWriteD <= 1'b0;
             reg_SrcASelD <= 2'b00;
