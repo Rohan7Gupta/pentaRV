@@ -1,10 +1,10 @@
 `include "DMEM.v"
 
-module memory(clk, rst, strCtrlM, RegWriteM, MemWriteM, MemtoRegM, PCBranchM,
-                ALUoutM, branchM, PCplusImmM, rdM, r2M, ALUoutW, ReadDataW, rdW, 
+module memory(clk, rst, strCtrlM, RegWriteM, MemWriteM, MemtoRegM,
+                ALUoutM, PCplusImmM, rdM, r2M, ALUoutW, ReadDataW, rdW, 
                 MemtoRegW, RegWriteW);
 
-input clk, rst, RegWriteM, MemWriteM, MemtoRegM, PCBranchM, branchM;
+input clk, rst, RegWriteM, MemWriteM, MemtoRegM;
 input [2:0] strCtrlM;
 input [31:0] ALUoutM, PCplusImmM, r2M;
 input [4:0] rdM;
@@ -13,7 +13,6 @@ output [31:0] ALUoutW, ReadDataW;
 output [4:0] rdW; 
 output MemtoRegW, RegWriteW;
 
-wire PCsrcM;
 wire [31:0] ReadDataM;
 wire [3:0] mem_wmask;
 
@@ -22,7 +21,6 @@ wire [15:0] LOAD_halfword;
 wire  [7:0] LOAD_byte;
 wire [31:0] LOAD_data, mem_rdata;
 
-assign PCsrcM = branchM & PCBranchM ;
 
 //store control
 assign mem_byteAccess     = strCtrlM[1:0] == 2'b00;

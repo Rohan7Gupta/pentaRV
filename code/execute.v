@@ -2,17 +2,17 @@
 
 module execute(clk,rst,strCtrlE, RegWriteE, MemWriteE, MemtoRegE, PCBranchE, 
                 ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE,
-                strCtrlM, RegWriteM, MemWriteM, MemtoRegM, PCBranchM,
-                ALUoutM,branchM,PCplusImmM,rdM,r2M);
+                strCtrlM, RegWriteM, MemWriteM, MemtoRegM,
+                ALUoutM,PCplusImmM,rdM,r2M, PCsrcE);
 
-input clk,rst,RegWriteE, MemWriteE, MemtoRegE, PCBranchE, SrcBSelE;
-input [1:0] SrcASelE;
+input clk,rst,RegWriteE, MemWriteE, MemtoRegE, PCBranchE;
+input [1:0] SrcASelE,SrcBSelE;
 input [2:0] strCtrlE;
 input [3:0] ALUopE;
 input [4:0] rdE;
 input [31:0] immE,PCE,r1E,r2E;
 
-output RegWriteM, MemWriteM, MemtoRegM, PCBranchM, branchM;
+output RegWriteM, MemWriteM, MemtoRegM, PCsrcE;
 output [2:0] strCtrlM;
 output [4:0] rdM;
 output [31:0] ALUoutM, PCplusImmM, r2M;
@@ -22,7 +22,7 @@ wire branchE;
 
 assign PCplusImmE  = PCE + immE;
 assign srcA = (SrcASelE[1]) ? ((SrcASelE[0]) ? r1E : 32'bz) : ((SrcASelE[0]) ? 32'b0 : PCE) ;
-assign srcB = (SrcBSelE) ? immE : r2E;
+assign srcB = (SrcBSelE[1]) ? ((SrcBSelE[0]) ? 32'd0 : 32'd4) : ((SrcBSelE[0]) ? immE : r2E) ;
 
 alu core(
     .aluIn1(srcA),
@@ -43,8 +43,6 @@ always @(posedge clk or posedge rst) begin
             reg_RegWriteE <= 1'b0;
             reg_MemWriteE <= 1'b0;
             reg_MemtoRegE <= 1'b0;
-            reg_PCBranchE <= 1'b0;
-            reg_branchE <= 1'b0;
             reg_strCtrlE <= 3'b000;
             reg_rdE <= 5'h00;
             reg_PCplusImmE <= 32'h00000000; 
@@ -56,8 +54,6 @@ always @(posedge clk or posedge rst) begin
             reg_RegWriteE <= RegWriteE;
             reg_MemWriteE <= MemWriteE;
             reg_MemtoRegE <= MemtoRegE;
-            reg_PCBranchE <= PCBranchE;
-            reg_branchE <= branchE;
             reg_strCtrlE <= strCtrlE;
             reg_rdE <= rdE;
             reg_PCplusImmE <= PCplusImmE; 
@@ -66,6 +62,7 @@ always @(posedge clk or posedge rst) begin
         end
     end
 
+assign PCsrcE = branchE & PCBranchE;
 
 assign strCtrlM = reg_strCtrlE;
 assign RegWriteM = reg_RegWriteE;

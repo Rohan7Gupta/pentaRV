@@ -1,8 +1,8 @@
 `include "PC_module.v"
 `include "IMEM.v"
-module fetch(clk,rst,PCsrcM,PCplusImmM,PCD, instrD);
+module fetch(clk,rst,PCsrcE,PCplusImmM,PCD, instrD);
 input clk, rst;
-input PCsrcM;
+input PCsrcE;
 input [31:0] PCplusImmM;
 output [31:0] instrD, PCD;
 
@@ -22,7 +22,7 @@ IMEM imem(
     .readData(instrF)
     );
 
-assign nextPCF = (PCsrcM)? PCplusImmM:PCplus4F;
+assign nextPCF = (PCsrcE)? PCplusImmM:PCplus4F;
 assign four = 32'd4;
 assign PCplus4F = PCF + four;
 

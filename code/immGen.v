@@ -13,7 +13,7 @@ assign Jimm={{12{instrD[31]}}, instrD[19:12],instrD[20],instrD[30:21],1'b0};//J 
 
 assign immD = (~immSelD[2]) ? ((~immSelD[1]) ? ((~immSelD[0]) ? Iimm : Bimm)
                                             : ((~immSelD[0]) ? Jimm : Simm))
-                            : ((~immSelD[1]) ? ((~immSelD[0]) ? Uimm : 32'b0)
-                                            : ((~immSelD[0]) ? 32'h4 : 32'bz));
+                            : (~immSelD[1]) ? ((~immSelD[0]) ? Uimm : 32'b0)
+                                            : 32'b0;
 
 endmodule

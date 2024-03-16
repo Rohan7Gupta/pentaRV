@@ -11,8 +11,8 @@ input [4:0] rdW;
 input [31:0] instrD,PCD,resultW;
 
 //control
-output RegWriteE,MemWriteE,PCBranchE,MemtoRegE,SrcBSelE; 
-output [1:0] SrcASelE;
+output RegWriteE,MemWriteE,PCBranchE,MemtoRegE; 
+output [1:0] SrcASelE,SrcBSelE;
 output [3:0] ALUopE;
 output [2:0] strCtrlE;
 
@@ -22,9 +22,9 @@ output [4:0] rdE;
 
 //internal wire control
 wire [2:0]immSelD,strCtrlD;
-wire RegWriteD,MemWriteD,PCBranchD,SrcBSelD,MemtoRegD;
+wire RegWriteD,MemWriteD,PCBranchD,MemtoRegD;
 wire [3:0] ALUopD;
-wire [1:0] SrcASelD;
+wire [1:0] SrcASelD,SrcBSelD;
 
 //internal wire data path
 wire [31:0] immD,r1D,r2D;
@@ -32,19 +32,19 @@ wire [31:0] immD,r1D,r2D;
 // assign rdD=instrD[11:7];
 
 //pipeline registers
-reg reg_RegWriteD,reg_MemWriteD,reg_MemtoRegD,reg_PCBranchD,reg_SrcBSelD;
+reg reg_RegWriteD,reg_MemWriteD,reg_MemtoRegD,reg_PCBranchD;
 reg [3:0] reg_ALUopD;
 reg [31:0] reg_r1D,reg_r2D,reg_immD,reg_PCD;
 reg [4:0] reg_rdD;
-reg [1:0] reg_SrcASelD;
+reg [1:0] reg_SrcASelD,reg_SrcBSelD;
 reg [2:0] reg_strCtrlD;
 
 
 RegFile regs(
     .clk(clk),
     .rst(rst),
-    .rs1(instrD[24:20]),
-    .rs2(instrD[19:15]),
+    .rs1(instrD[19:15]),
+    .rs2(instrD[24:20]),
     .rd(rdW),
     .we(RegWriteW),
     .wd(resultW),
@@ -78,7 +78,7 @@ Control control(
         if(rst) begin
             reg_RegWriteD <= 1'b0;
             reg_SrcASelD <= 2'b00;
-            reg_SrcBSelD <= 1'b0;
+            reg_SrcBSelD <= 2'b00;
             reg_MemWriteD <= 1'b0;
             reg_MemtoRegD <= 1'b0;
             reg_PCBranchD <= 1'b0;
