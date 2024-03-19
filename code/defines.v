@@ -35,4 +35,5 @@
 `define     LUI        7'b0110111  // rd <- Uimm   
 `define     Load       7'b0000011  // rd <- mem[rs1+Iimm]
 `define     Store      7'b0100011  // mem[rs1+Simm] <- rs2
-`define     SYSTEM     7'b1110011  // system operation  
+`define     SYSTEM     7'b1110011  // system operation 
+`define     NOP        7'b0000000  //No operation 

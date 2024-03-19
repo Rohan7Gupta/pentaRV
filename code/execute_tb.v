@@ -1,6 +1,6 @@
-`include "decode.v"
+`include "alu.v"
 `timescale 1ns / 1ps
-module decode_tb();
+module execute_tb();
 
 reg clk,rst,RegWriteW;
 reg [4:0] rdW;
@@ -16,9 +16,10 @@ wire [2:0] strCtrlE;
 wire [31:0] immE,PCE,r1E,r2E;
 wire [4:0] rdE;
 
-decode dut(clk,rst, instrD, PCD, RegWriteW, rdW, resultW, strCtrlE, RegWriteE, 
-MemWriteE, MemtoRegE, PCBranchE, ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE);
-
+execute dut(clk,rst,strCtrlE, RegWriteE, MemWriteE, MemtoRegE, PCBranchE, 
+                ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE,
+                strCtrlM, RegWriteM, MemWriteM, MemtoRegM,
+                ALUoutM,PCplusImmM,rdM,r2M, PCsrcE);
 initial begin 
     clk=0;
     forever #10 clk = ~clk;
