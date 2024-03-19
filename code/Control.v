@@ -25,13 +25,18 @@ assign strCtrlD = funct3;
 assign ALUopD = (opcode == `ALUimm || opcode == `Branch ) ? {1'b0,funct3} : 
                                 ((opcode == `ALUreg ) ? {funct7[5],funct3} : 4'b0000);
 
-// assign immSelD = (opcode == `ALUimm) 3'b000 ? : (opcode == `LUI || opcode == `AUIPC) ? 
-//                 3'o1 : (opcode == `Load || opcode == `Store) ? 3'o2 : (opcode == `Branch) ? 
-//                 3'o3 : (opcode == `JAL) ? 3'o4 : 3'o5;
-assign immSelD = (opcode == `ALUimm) ? 3'b000 :
-                 ((opcode == `LUI || opcode == `AUIPC) ? 3'o1 :
-                 ((opcode == `Load || opcode == `Store) ? 3'o2 :
-                 ((opcode == `Branch) ? 3'o3 :
-                 ((opcode == `JAL) ? 3'o4 : 3'o5))));
+reg [2:0]immSel;
+always @(*) begin
+    case(opcode)
+    `ALUimm : immSel <= 3'o0;
+    `LUI,`AUIPC : immSel <= 3'o1;
+    `Store : immSel <= 3'o2;
+    `Branch : immSel <= 3'o3;
+    `JAL : immSel <= 3'o4;
+    `Load : immSel <= 3'o5;
+    default : immSel <= 3'o6;
+    endcase
+end
+assign immSelD = immSel;
 
 endmodule
