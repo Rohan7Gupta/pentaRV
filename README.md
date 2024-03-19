@@ -1,7 +1,13 @@
 # rv32_5_Stage_Pipeline
 
-#data-path
-![5 stage pipeline data-path (without hazard handling)]([image_url](https://github.com/Rohan7Gupta/rv32_5_Stage_Pipeline/blob/main/RV32%205-stage%20pipeline%20data-path.png)https://github.com/Rohan7Gupta/rv32_5_Stage_Pipeline/blob/main/RV32%205-stage%20pipeline%20data-path.png)
 
 JALR removed
+00000000 -- NOP
+
 Load store data memory problem
+Not resolved for hazards
+
+References
+Harris & Harris 5 stage pipeline MIPS architecture
+https://github.com/merldsu/RISCV_Pipeline_Core.git
+https://github.com/Moo-osama/RISCV-verilog.git
