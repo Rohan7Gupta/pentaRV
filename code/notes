@@ -1,0 +1,53 @@
+ // Load
+   // All memory accesses are aligned on 32 bits boundary. For this
+   // reason, we need some circuitry that does unaligned halfword
+   // and byte load/store, based on:
+   // - funct3[1:0]:  00->byte 01->halfword 10->word
+   // - mem_addr[1:0]: indicates which byte/halfword is accessed
+
+   wire mem_byteAccess     = funct3[1:0] == 2'b00;
+   wire mem_halfwordAccess = funct3[1:0] == 2'b01;
+
+
+   wire [15:0] LOAD_halfword =
+	       loadstore_addr[1] ? mem_rdata[31:16] : mem_rdata[15:0];
+
+   wire  [7:0] LOAD_byte =
+	       loadstore_addr[0] ? LOAD_halfword[15:8] : LOAD_halfword[7:0];
+
+   // LOAD, in addition to funct3[1:0], LOAD depends on:
+   // - funct3[2] (instr[14]): 0->do sign expansion   1->no sign expansion
+   wire LOAD_sign =
+	!funct3[2] & (mem_byteAccess ? LOAD_byte[7] : LOAD_halfword[15]);
+
+   wire [31:0] LOAD_data =
+         mem_byteAccess ? {{24{LOAD_sign}},     LOAD_byte} :
+     mem_halfwordAccess ? {{16{LOAD_sign}}, LOAD_halfword} :
+                          mem_rdata ;
+
+
+// Store
+   // ------------------------------------------------------------------------
+
+   assign mem_wdata[ 7: 0] = rs2[7:0];
+   assign mem_wdata[15: 8] = loadstore_addr[0] ? rs2[7:0]  : rs2[15: 8];
+   assign mem_wdata[23:16] = loadstore_addr[1] ? rs2[7:0]  : rs2[23:16];
+   assign mem_wdata[31:24] = loadstore_addr[0] ? rs2[7:0]  :
+			     loadstore_addr[1] ? rs2[15:8] : rs2[31:24];
+
+   // The memory write mask:
+   //    1111                     if writing a word
+   //    0011 or 1100             if writing a halfword
+   //                                (depending on loadstore_addr[1])
+   //    0001, 0010, 0100 or 1000 if writing a byte
+   //                                (depending on loadstore_addr[1:0])
+
+   wire [3:0] STORE_wmask =
+	      mem_byteAccess      ?
+	            (loadstore_addr[1] ?
+		          (loadstore_addr[0] ? 4'b1000 : 4'b0100) :
+		          (loadstore_addr[0] ? 4'b0010 : 4'b0001)
+                    ) :
+	      mem_halfwordAccess ?
+	            (loadstore_addr[1] ? 4'b1100 : 4'b0011) :
+              4'b1111;

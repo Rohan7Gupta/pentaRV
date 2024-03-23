@@ -19,14 +19,19 @@ wire [3:0] mem_wmask;
 wire mem_byteAccess, mem_halfwordAccess, LOAD_sign;
 wire [15:0] LOAD_halfword;
 wire  [7:0] LOAD_byte;
-wire [31:0] LOAD_data, mem_rdata;
+wire [31:0] LOAD_data, mem_rdata, mem_wdata;
 
 
 //store control
 assign mem_byteAccess     = strCtrlM[1:0] == 2'b00;
 assign mem_halfwordAccess = strCtrlM[1:0] == 2'b01;
 
-
+// The memory write mask:
+   //    1111                     if writing a word
+   //    0011 or 1100             if writing a halfword
+   //                                (depending on loadstore_addr[1])
+   //    0001, 0010, 0100 or 1000 if writing a byte
+   //                                (depending on loadstore_addr[1:0])
 assign mem_wmask = mem_byteAccess ?
 	(ALUoutM[1] ?
 	(ALUoutM[0] ? 4'b1000 : 4'b0100) :
@@ -42,12 +47,18 @@ DMEM dmem(
     .rst(rst),
     .we(MemWriteM),
     .mem_wmask(mem_wmask),
-    .wd(r2M),
+    .wd(mem_wdata),
     .A(ALUoutM),
     .rd(mem_rdata)
 );
 
 //load control
+
+   // All memory accesses are aligned on 32 bits boundary. For this
+   // reason, we need some circuitry that does unaligned halfword
+   // and byte load/store, based on:
+   // - funct3[1:0]:  00->byte 01->halfword 10->word
+   // - mem_addr[1:0]: indicates which byte/halfword is accessed
 assign LOAD_halfword = ALUoutM[1] ? mem_rdata[31:16] : mem_rdata[15:0];
 assign LOAD_byte = ALUoutM[0] ? LOAD_halfword[15:8] : LOAD_halfword[7:0];
 
@@ -60,6 +71,15 @@ assign LOAD_data = mem_byteAccess ? {{24{LOAD_sign}},     LOAD_byte} :
                         mem_rdata ;
 
 assign ReadDataM = LOAD_data;
+
+//Store
+assign mem_wdata[ 7: 0] = r2M[7:0];
+assign mem_wdata[15: 8] = ALUoutM[0] ? r2M[7:0]  : r2M[15: 8];
+assign mem_wdata[23:16] = ALUoutM[1] ? r2M[7:0]  : r2M[23:16];
+assign mem_wdata[31:24] = ALUoutM[0] ? r2M[7:0]  :
+			    ALUoutM[1] ? r2M[15:8] : r2M[31:24];
+
+
 
 //pipeline register
 reg [31:0] reg_ALUoutM, reg_ReadDataM;

@@ -12,7 +12,8 @@ output [2:0] immSelD,strCtrlD;
 output [1:0] SrcASelD, SrcBSelD; //implement 00 -> jal,jalr,auipc, 01 ->lui, 11->rs1 
 
 assign RegWriteD = (opcode == `Load || opcode == `ALUreg || opcode == `ALUimm ) ? 1'b1 : 1'b0 ;
-assign SrcBSelD = (opcode == `Load || opcode == `Store || opcode == `ALUimm) ? 2'd1 : 
+assign SrcBSelD = (opcode == `Load || opcode == `Store || opcode == `ALUimm || 
+                opcode == `LUI || opcode == `AUIPC || opcode == `JAL) ? 2'd1 : 
                                 (opcode == `JAL) ? 2'd2 : 2'b0 ;
 assign SrcASelD = (opcode == `JAL || opcode == `JALR || opcode == `AUIPC) ? 2'b00 : 
                                         ((opcode == `LUI) ? 2'b01 :  2'b11);  
