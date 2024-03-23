@@ -51,13 +51,14 @@ output branch;
    reg branch;
    always @(*) begin
       case(aluOP)
-	`BEQ: branch = EQ;
-	`BNE: branch = !EQ;
-	`BLT: branch = LT;
-	`BGE: branch = !LT;
-	`BLTU: branch = LTU;
-	`BGEU: branch = !LTU;
-	default: branch = 1'b0;
+	      `BEQ: branch = EQ;
+	      `BNE: branch = !EQ;
+	      `BLT: branch = LT;
+	      `BGE: branch = !LT;
+	      `BLTU: branch = LTU;
+	      `BGEU: branch = !LTU;
+         `jal : branch = 1'b1;
+	      default: branch = 1'b0;
       endcase
    end
 endmodule

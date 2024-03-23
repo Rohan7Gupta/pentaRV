@@ -33,7 +33,7 @@ alu core(
 );
 
 //pipeline register
-reg reg_RegWriteE,reg_MemWriteE,reg_MemtoRegE,reg_PCBranchE,reg_branchE;
+reg reg_RegWriteE,reg_MemWriteE,reg_MemtoRegE;
 reg [2:0]reg_strCtrlE;
 reg [4:0]reg_rdE;
 reg [31:0]reg_ALUoutE,reg_PCplusImmE,reg_r2E; 
@@ -67,8 +67,6 @@ assign PCsrcE = branchE & PCBranchE;
 assign strCtrlM = reg_strCtrlE;
 assign RegWriteM = reg_RegWriteE;
 assign MemWriteM = reg_MemWriteE;
-assign PCBranchM = reg_PCBranchE;
-assign branchM = reg_branchE;
 assign MemtoRegM = reg_MemtoRegE;
 assign r2M = reg_r2E;
 assign rdM = reg_rdE;

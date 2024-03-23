@@ -24,8 +24,9 @@ assign PCBranchD = (opcode == `Branch || opcode == `JAL || opcode == `JALR) ? 1'
 assign strCtrlD = funct3;
 
 assign ALUopD = (opcode == `ALUimm || opcode == `Branch ) ? {1'b0,funct3} : 
-                                ((opcode == `ALUreg ) ? {funct7[5],funct3} : 4'b0000);
-
+                                ((opcode == `ALUreg ) ? {funct7[5],funct3} : 
+                                ((opcode == `JAL) ? 4'b1000 : 4'b0000));
+                                // 1111 chosen for JAL to avaoid  confusion with R type
 reg [2:0]immSel;
 always @(*) begin
     case(opcode)

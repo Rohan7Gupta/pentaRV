@@ -4,7 +4,9 @@
 JALR removed
 00000000 -- NOP
 
-Load store data memory problem
+R,I,L,S,U working
+Load store - 4 cycle, R,I,U 5 cycle
+
 Not resolved for hazards
 
 References
