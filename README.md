@@ -1,5 +1,5 @@
 # rv32_5_Stage_Pipeline
-
+Data memory byte accesible
 
 JALR removed
 00000000 -- NOP

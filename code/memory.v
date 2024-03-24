@@ -1,12 +1,12 @@
 `include "DMEM.v"
 
-module memory(clk, rst, strCtrlM, RegWriteM, MemWriteM, MemtoRegM,
-                ALUoutM, PCplusImmM, rdM, r2M, ALUoutW, ReadDataW, rdW, 
+module memory(clk, rst,dump, strCtrlM, RegWriteM, MemWriteM, MemtoRegM,
+                ALUoutM, rdM, r2M, ALUoutW, ReadDataW, rdW, 
                 MemtoRegW, RegWriteW);
 
-input clk, rst, RegWriteM, MemWriteM, MemtoRegM;
+input clk, rst,dump, RegWriteM, MemWriteM, MemtoRegM;
 input [2:0] strCtrlM;
-input [31:0] ALUoutM, PCplusImmM, r2M;
+input [31:0] ALUoutM, r2M;
 input [4:0] rdM;
 
 output [31:0] ALUoutW, ReadDataW;
@@ -45,10 +45,11 @@ assign mem_wmask = mem_byteAccess ?
 DMEM dmem(
     .clk(clk),
     .rst(rst),
+    .dump(dump),
     .we(MemWriteM),
     .mem_wmask(mem_wmask),
     .wd(mem_wdata),
-    .A(ALUoutM),
+    .A(ALUoutM[31:2]),
     .rd(mem_rdata)
 );
 
