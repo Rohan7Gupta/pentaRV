@@ -24,9 +24,9 @@ assign PCBranchD = (opcode == `Branch || opcode == `JAL || opcode == `JALR) ? 1'
 
 assign strCtrlD = funct3;
 
-assign ALUopD = ((opcode == `ALUimm && funct7 != 3'b101) || opcode == `Branch ) ? {1'b0,funct3} : 
-                                ((opcode == `ALUreg || (opcode == `ALUimm && funct7 == 3'b101) ) ? {funct7,funct3} : 
-                                ((opcode == `JAL || opcode == `JALR) ? 4'b1000 : 4'b0000));
+assign ALUopD = ((opcode == `ALUimm && funct3 != 3'b101) || opcode == `Branch ) ? {1'b0,funct3} : 
+                                ((opcode == `ALUreg || (opcode == `ALUimm && funct3 == 3'b101) ) ? {funct7,funct3} : 
+                                ((opcode == `JAL || opcode == `JALR) ? 4'b1111 : 4'b0000));
                                 // 1000 chosen for JAL to avaoid  confusion with R type
 
 assign JALRctrlD = (opcode == `JALR)? 1'b0 : 1'b1;

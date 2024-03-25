@@ -32,6 +32,8 @@ initial begin
 
     // Initialize memory with some values (optional)
     mem[0] = 32'h00000000;
+    mem[1] = 32'h08000000;
+    mem[25]= 32'h84755779;
 end
 
 always @(posedge clk) begin

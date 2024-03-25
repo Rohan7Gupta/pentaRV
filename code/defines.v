@@ -21,7 +21,7 @@
 `define     BGE          4'b0101
 `define     BLTU         4'b0110
 `define     BGEU         4'b0111
-`define     jal          4'b1000
+`define     jal_jalr          4'b1111 //jal,jalr
 
 `define     SB           3'b000
 `define     SH           3'b001

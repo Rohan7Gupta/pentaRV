@@ -17,11 +17,11 @@ output [2:0] strCtrlM;
 output [4:0] rdM;
 output [31:0] ALUoutM, PCplusImmE, r2M;
 
-wire [31:0] srcA,srcB, ALUoutE, Imm;
+wire [31:0] srcA,srcB, ALUoutE, pc;
 wire branchE;
 
-assign Imm = (JALRctrlE) ? immE : r1E;
-assign PCplusImmE  = PCE + Imm;
+assign pc = (JALRctrlE) ? PCE : r1E;
+assign PCplusImmE  = pc + immE;
 assign srcA = (SrcASelE[1]) ? ((SrcASelE[0]) ? r1E : 32'bz) : ((SrcASelE[0]) ? 32'b0 : PCE) ;
 assign srcB = (SrcBSelE[1]) ? ((SrcBSelE[0]) ? 32'd0 : 32'd4) : ((SrcBSelE[0]) ? immE : r2E) ;
 

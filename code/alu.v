@@ -31,19 +31,19 @@ output branch;
 
    wire [31:0] leftshift = flip32(shifter);
 
-   reg [31:0]  aluOut;
+   reg aluOut;
    always @(*) begin
    case(aluOP)
-	`ADD: aluOut = aluPlus; //add/sub/addi
-	`SLL: aluOut = leftshift;
-	`SLT: aluOut = {31'b0, LT};
-	`SLTU: aluOut = {31'b0, LTU};
-	`XOR: aluOut = (aluIn1 ^ aluIn2);
-	`SRL: aluOut = shifter;
-   `SRA: aluOut = shifter;
-	`OR: aluOut = (aluIn1 | aluIn2);
-	`AND: aluOut = (aluIn1 & aluIn2);
-   `SUB: aluOut = aluMinus;	
+	`ADD,`jal_jalr: aluOut <= aluPlus; //add/sub/addi
+	`SLL: aluOut <= leftshift;
+	`SLT: aluOut <= {31'b0, LT};
+	`SLTU: aluOut <= {31'b0, LTU};
+	`XOR: aluOut <= (aluIn1 ^ aluIn2);
+	`SRL: aluOut <= shifter;
+   `SRA: aluOut <= shifter;
+	`OR: aluOut <= (aluIn1 | aluIn2);
+	`AND: aluOut <= (aluIn1 & aluIn2);
+   `SUB: aluOut <= aluMinus;	
    endcase
    end
 
@@ -51,14 +51,14 @@ output branch;
    reg branch;
    always @(*) begin
       case(aluOP)
-	      `BEQ: branch = EQ;
-	      `BNE: branch = !EQ;
-	      `BLT: branch = LT;
-	      `BGE: branch = !LT;
-	      `BLTU: branch = LTU;
-	      `BGEU: branch = !LTU;
-         `jal : branch = 1'b1;
-	      default: branch = 1'b0;
+	      `BEQ: branch <= EQ;
+	      `BNE: branch <= !EQ;
+	      `BLT: branch <= LT;
+	      `BGE: branch <= !LT;
+	      `BLTU: branch <= LTU;
+	      `BGEU: branch <= !LTU;
+         `jal_jalr : branch <= 1'b1;
+	      default: branch <= 1'b0;
       endcase
    end
 endmodule
