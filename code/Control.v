@@ -3,7 +3,8 @@
 module Control(opcode,funct3,funct7,strCtrlD,RegWriteD,MemWriteD,
 PCBranchD,SrcASelD,SrcBSelD,MemtoRegD,ALUopD,immSelD, JALRctrlD);
 
-input [6:0] opcode,funct7;
+input funct7;
+input [6:0] opcode;
 input [2:0] funct3;
 
 output RegWriteD,MemWriteD,PCBranchD,MemtoRegD,JALRctrlD;
@@ -23,8 +24,8 @@ assign PCBranchD = (opcode == `Branch || opcode == `JAL || opcode == `JALR) ? 1'
 
 assign strCtrlD = funct3;
 
-assign ALUopD = (opcode == `ALUimm || opcode == `Branch ) ? {1'b0,funct3} : 
-                                ((opcode == `ALUreg ) ? {funct7[5],funct3} : 
+assign ALUopD = ((opcode == `ALUimm && funct7 != 3'b101) || opcode == `Branch ) ? {1'b0,funct3} : 
+                                ((opcode == `ALUreg || (opcode == `ALUimm && funct7 == 3'b101) ) ? {funct7,funct3} : 
                                 ((opcode == `JAL || opcode == `JALR) ? 4'b1000 : 4'b0000));
                                 // 1000 chosen for JAL to avaoid  confusion with R type
 

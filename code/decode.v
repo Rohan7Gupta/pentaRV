@@ -61,7 +61,7 @@ immGen immG(
 Control control(
     .opcode(instrD[6:0]),
     .funct3(instrD[14:12]),
-    .funct7(instrD[31:25]),
+    .funct7(instrD[30]),
     .strCtrlD(strCtrlD),
     .RegWriteD(RegWriteD),
     .MemWriteD(MemWriteD),
