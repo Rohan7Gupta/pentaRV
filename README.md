@@ -1,5 +1,8 @@
 # rv32_5_Stage_Pipeline
+
 Data memory byte accesible
+i.e for work access, memory in multiples of 4
+for half word access, memory in multiples of 2
 
 00000000 -- NOP
 
@@ -7,7 +10,7 @@ All instructions working (rv32i) (excluding environment and fence)
 
 Not resolved for hazards
 
-# References
+### References
 
 The RISC-V Instruction Set Manual Volume I Unprivileged Architecture
  Editors: Andrew waterman, Krste Asanovic, SiFive, Inc., CS Division, EECS Department, University of California, Berkeley
