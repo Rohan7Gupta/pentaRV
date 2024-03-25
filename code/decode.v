@@ -3,7 +3,7 @@
 `include "RegFile.v"
 
 module decode(clk,rst, instrD, PCD, RegWriteW, rdW, resultW, strCtrlE, RegWriteE, 
-MemWriteE, MemtoRegE, PCBranchE, ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE);
+MemWriteE, MemtoRegE, PCBranchE, ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE, JALRctrlE);
 
 //data path
 input clk,rst,RegWriteW;
@@ -11,7 +11,7 @@ input [4:0] rdW;
 input [31:0] instrD,PCD,resultW;
 
 //control
-output RegWriteE,MemWriteE,PCBranchE,MemtoRegE; 
+output RegWriteE,MemWriteE,PCBranchE,MemtoRegE, JALRctrlE; 
 output [1:0] SrcASelE,SrcBSelE;
 output [3:0] ALUopE;
 output [2:0] strCtrlE;
@@ -22,7 +22,7 @@ output [4:0] rdE;
 
 //internal wire control
 wire [2:0]immSelD,strCtrlD;
-wire RegWriteD,MemWriteD,PCBranchD,MemtoRegD;
+wire RegWriteD,MemWriteD,PCBranchD,MemtoRegD, JALRctrlD;
 wire [3:0] ALUopD;
 wire [1:0] SrcASelD,SrcBSelD;
 
@@ -32,7 +32,7 @@ wire [31:0] immD,r1D,r2D;
 // assign rdD=instrD[11:7];
 
 //pipeline registers
-reg reg_RegWriteD,reg_MemWriteD,reg_MemtoRegD,reg_PCBranchD;
+reg reg_RegWriteD,reg_MemWriteD,reg_MemtoRegD,reg_PCBranchD, reg_JALRctrlD;
 reg [3:0] reg_ALUopD;
 reg [31:0] reg_r1D,reg_r2D,reg_immD,reg_PCD;
 reg [4:0] reg_rdD;
@@ -70,15 +70,16 @@ Control control(
     .SrcBSelD(SrcBSelD),
     .MemtoRegD(MemtoRegD),
     .ALUopD(ALUopD),
-    .immSelD(immSelD)
+    .immSelD(immSelD),
+    .JALRctrlD(JALRctrlD)
 );
 
 //pipeline registers
     always @(posedge clk or posedge rst) begin
         if(rst) begin
             reg_RegWriteD <= 1'b0;
-            reg_SrcASelD <= 2'b00;
-            reg_SrcBSelD <= 2'b00;
+            reg_SrcASelD <= 2'b01;
+            reg_SrcBSelD <= 2'b11;
             reg_MemWriteD <= 1'b0;
             reg_MemtoRegD <= 1'b0;
             reg_PCBranchD <= 1'b0;
@@ -89,6 +90,7 @@ Control control(
             reg_immD <= 32'h00000000;
             reg_rdD <= 5'h00;
             reg_PCD <= 32'h00000000; 
+            reg_JALRctrlD <= 1'b1;
 
         end
         else begin
@@ -105,6 +107,7 @@ Control control(
             reg_immD <= immD;
             reg_rdD <= instrD[11:7];
             reg_PCD <= PCD;
+            reg_JALRctrlD <= JALRctrlD;
         end
     end
 
@@ -122,5 +125,6 @@ assign PCE = reg_PCD;
 assign r1E = reg_r1D;
 assign r2E = reg_r2D;
 assign rdE = reg_rdD;
+assign JALRctrlE = reg_JALRctrlD;
 
 endmodule

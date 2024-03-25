@@ -11,7 +11,7 @@ input clk,rst,dump;
 wire [31:0] instrD, PCD;
 
 //decode
-wire RegWriteE,MemWriteE,PCBranchE,MemtoRegE; 
+wire RegWriteE,MemWriteE,PCBranchE,MemtoRegE, JALRctrlE; 
 wire [1:0] SrcASelE,SrcBSelE;
 wire [3:0] ALUopE;
 wire [2:0] strCtrlE;
@@ -35,9 +35,9 @@ wire [31:0] resultW;
 fetch fetch_unit(clk,rst,PCsrcE,PCplusImmE,PCD, instrD);
 
 decode decode_unit(clk,rst, instrD, PCD, RegWriteW, rdW, resultW, strCtrlE, RegWriteE, 
-MemWriteE, MemtoRegE, PCBranchE, ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE);
+MemWriteE, MemtoRegE, PCBranchE, ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE, JALRctrlE);
 
-execute execute_unit(clk,rst,strCtrlE, RegWriteE, MemWriteE, MemtoRegE, PCBranchE, 
+execute execute_unit(clk,rst,JALRctrlE,strCtrlE, RegWriteE, MemWriteE, MemtoRegE, PCBranchE, 
                 ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE,
                 strCtrlM, RegWriteM, MemWriteM, MemtoRegM,
                 ALUoutM , PCplusImmE, rdM, r2M, PCsrcE);

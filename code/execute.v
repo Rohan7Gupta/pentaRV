@@ -1,11 +1,11 @@
 `include "alu.v"
 
-module execute(clk,rst,strCtrlE, RegWriteE, MemWriteE, MemtoRegE, PCBranchE, 
+module execute(clk,rst,JALRctrlE,strCtrlE, RegWriteE, MemWriteE, MemtoRegE, PCBranchE, 
                 ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE,
                 strCtrlM, RegWriteM, MemWriteM, MemtoRegM,
                 ALUoutM,PCplusImmE,rdM,r2M, PCsrcE);
 
-input clk,rst,RegWriteE, MemWriteE, MemtoRegE, PCBranchE;
+input clk,rst,JALRctrlE,RegWriteE, MemWriteE, MemtoRegE, PCBranchE;
 input [1:0] SrcASelE,SrcBSelE;
 input [2:0] strCtrlE;
 input [3:0] ALUopE;
@@ -17,10 +17,11 @@ output [2:0] strCtrlM;
 output [4:0] rdM;
 output [31:0] ALUoutM, PCplusImmE, r2M;
 
-wire [31:0] srcA,srcB, ALUoutE, PCplusImmE;
+wire [31:0] srcA,srcB, ALUoutE, Imm;
 wire branchE;
 
-assign PCplusImmE  = PCE + immE;
+assign Imm = (JALRctrlE) ? immE : r1E;
+assign PCplusImmE  = PCE + Imm;
 assign srcA = (SrcASelE[1]) ? ((SrcASelE[0]) ? r1E : 32'bz) : ((SrcASelE[0]) ? 32'b0 : PCE) ;
 assign srcB = (SrcBSelE[1]) ? ((SrcBSelE[0]) ? 32'd0 : 32'd4) : ((SrcBSelE[0]) ? immE : r2E) ;
 
