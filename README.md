@@ -1,6 +1,6 @@
 # rv32_5_Stage_Pipeline
 ### Collaborators
-####Rohan Gupta
+#### Rohan Gupta
 
 ### Specifics
 Data memory byte accesible
