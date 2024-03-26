@@ -46,5 +46,5 @@ memory memory_unit(clk, rst,dump, strCtrlM, RegWriteM, MemWriteM, MemtoRegM,
                 ALUoutM, rdM, r2M, ALUoutW, ReadDataW, rdW, 
                 MemtoRegW, RegWriteW);
 
-writeback writeback_unit( ALUoutW, ReadDataW, rdW, MemtoRegW, RegWriteW,resultW);
+writeback writeback_unit( ALUoutW, ReadDataW, MemtoRegW,resultW);
 endmodule

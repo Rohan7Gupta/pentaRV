@@ -74,12 +74,13 @@ assign LOAD_data = mem_byteAccess ? {{24{LOAD_sign}},     LOAD_byte} :
 assign ReadDataM = LOAD_data;
 
 //Store
-assign mem_wdata[ 7: 0] = r2M[7:0];
-assign mem_wdata[15: 8] = ALUoutM[0] ? r2M[7:0]  : r2M[15: 8];
-assign mem_wdata[23:16] = ALUoutM[1] ? r2M[7:0]  : r2M[23:16];
-assign mem_wdata[31:24] = ALUoutM[0] ? r2M[7:0]  :
+wire [31:0] wdata;
+assign wdata[ 7: 0] = r2M[7:0];
+assign wdata[15: 8] = ALUoutM[0] ? r2M[7:0]  : r2M[15: 8];
+assign wdata[23:16] = ALUoutM[1] ? r2M[7:0]  : r2M[23:16];
+assign wdata[31:24] = ALUoutM[0] ? r2M[7:0]  :
 			    ALUoutM[1] ? r2M[15:8] : r2M[31:24];
-
+assign mem_wdata = (wdata)? wdata : 32'b0;
 
 
 //pipeline register

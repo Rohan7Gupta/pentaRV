@@ -1,8 +1,7 @@
-module writeback( ALUoutW, ReadDataW, rdW, MemtoRegW, RegWriteW,resultW);
+module writeback( ALUoutW, ReadDataW, MemtoRegW, resultW);
 
-input RegWriteW, MemtoRegW;
+input MemtoRegW;
 input [31:0] ALUoutW, ReadDataW;
-input [4:0] rdW;
 
 output [31:0] resultW;
 

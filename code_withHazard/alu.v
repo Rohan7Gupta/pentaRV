@@ -44,6 +44,7 @@ output branch;
 	`OR: aluOut <= (aluIn1 | aluIn2);
 	`AND: aluOut <= (aluIn1 & aluIn2);
    `SUB: aluOut <= aluMinus;	
+   default: aluOut <= 32'b0;
    endcase
    end
 
