@@ -2,6 +2,8 @@
 ### Collaborators
 #### Rohan Gupta
 
+### Architecture
+![architecture](https://github.com/Rohan7Gupta/rv32_5_Stage_Pipeline/blob/main/RV32%205-stage%20pipeline%20data-path%20(14).png)
 ### Specifics
 Data memory byte accesible
 i.e for work access, memory in multiples of 4
