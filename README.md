@@ -1,5 +1,8 @@
 # rv32_5_Stage_Pipeline
+### collaborators
+Rohan Gupta
 
+### specifics
 Data memory byte accesible
 i.e for work access, memory in multiples of 4
 for half word access, memory in multiples of 2
