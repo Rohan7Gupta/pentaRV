@@ -1,5 +1,5 @@
 module immGen(instrD,immSelD,immD);
-input [31:0] instrD;
+input [31:7] instrD;
 input [2:0] immSelD;
 output [31:0] immD;
 

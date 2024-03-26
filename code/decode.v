@@ -53,7 +53,7 @@ RegFile regs(
 );
 
 immGen immG(
-    .instrD(instrD),
+    .instrD(instrD[31:7]),
     .immSelD(immSelD),
     .immD(immD)
 );
