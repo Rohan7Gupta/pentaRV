@@ -3,9 +3,7 @@
 
 ###### rv32i unpriviledged
 ###### Data memory byte accesible
-i.e for work access, memory in multiples of 4, 
-
-for half word access, memory in multiples of 2
+i.e for work access, memory in multiples of 4, for half word access, memory in multiples of 2
 
 ###### 00000000 -- NOP
 ###### (fence coded as nop, 1 hart system)
