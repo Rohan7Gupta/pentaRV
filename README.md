@@ -1,4 +1,4 @@
-# rv32_5_Stage_Pipeline
+# rv32 5 Stage Pipeline Core
 ## Collaborators
 ### Rohan Gupta
 
