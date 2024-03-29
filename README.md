@@ -5,8 +5,8 @@
 ## Architecture
 ![architecture](https://github.com/Rohan7Gupta/rv32_5_Stage_Pipeline/blob/main/RV32%205-stage%20pipeline%20data-path%20(14).png)
 ## Specifics
-#### rv32i unpriviledged
-#### Data memory byte accesible
+### rv32i unpriviledged
+### Data memory byte accesible
 
 i.e for work access, memory in multiples of 4
 for half word access, memory in multiples of 2
