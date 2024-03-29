@@ -1,13 +1,13 @@
 # rv32i 5 Stage Pipeline Core
 ## by Rohan Gupta
 
-###### rv32i unpriviledged
-###### Data memory byte accesible
+##### rv32i unpriviledged
+##### Data memory byte accesible
 i.e for work access, memory in multiples of 4, for half word access, memory in multiples of 2
 
-###### 00000000 -- NOP
-###### (fence coded as nop, 1 hart system)
-###### ecall, ebreak not yet implemented
+00000000 -- NOP
+(fence coded as nop, 1 hart system)
+ecall, ebreak not yet implemented
 All instructions working (rv32i) (excluding environment)
 Not resolved for hazards
 
