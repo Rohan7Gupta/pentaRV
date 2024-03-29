@@ -3,7 +3,7 @@
 
 ###### rv32i unpriviledged
 ###### Data memory byte accesible
-i.e for work access, memory in multiples of 4 
+i.e for work access, memory in multiples of 4 \n
 for half word access, memory in multiples of 2
 
 ###### 00000000 -- NOP
