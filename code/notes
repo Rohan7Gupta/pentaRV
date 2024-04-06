@@ -51,3 +51,15 @@
 	      mem_halfwordAccess ?
 	            (loadstore_addr[1] ? 4'b1100 : 4'b0011) :
               4'b1111;
+
+    hazard_unit Forwarding_block (
+                        .rst(rst), 
+                        .RegWriteM(RegWriteM), 
+                        .RegWriteW(RegWriteW), 
+                        .RD_M(RD_M), 
+                        .RD_W(RDW), 
+                        .Rs1_E(RS1_E), 
+                        .Rs2_E(RS2_E), 
+                        .ForwardAE(ForwardAE), 
+                        .ForwardBE(ForwardBE)
+                        );
