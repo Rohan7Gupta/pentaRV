@@ -7,9 +7,11 @@ for half word access, memory in multiples of 2
 00000000 -- NOP
 (fence coded as nop, 1 hart system)
 
-All instructions working (rv32i) (excluding environment and fence)
+All instructions working (rv32i) (excluding environment and fence) & resolved for hazards
+Data forwarding implemented
+Pipeline flush implemented (only decode)
+branch resolved in execute stage
 
-Not resolved for hazards
 
 ### References
 

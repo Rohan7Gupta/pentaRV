@@ -1,7 +1,7 @@
 `include "PC_module.v"
 `include "IMEM.v"
-module fetch(clk,rst,PCsrcE,PCplusImmE,PCD, instrD);
-input clk, rst;
+module fetch(clk,rst,flush, PCsrcE,PCplusImmE,PCD, instrD);
+input clk, rst, flush;
 input PCsrcE;
 input [31:0] PCplusImmE;
 output [31:0] instrD, PCD;
@@ -28,7 +28,7 @@ assign PCplus4F = PCF + four;
 
 //pipeline registers
 always @ (posedge clk or posedge rst) begin //rst used to implement stall
-    if(rst) begin
+    if(rst | flush) begin
         reg_instrF <= 32'b0;
         reg_PCF <= 32'b0;
     end
@@ -40,7 +40,7 @@ end
 
 //signals to Decoder
 assign instrD = (rst) ? 32'b0 : reg_instrF;
-assign PCD = rst ? 32'b0 : reg_PCF;
+assign PCD = (rst) ? 32'b0 : reg_PCF;
 
 endmodule
 
