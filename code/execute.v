@@ -20,7 +20,7 @@ output [31:0] ALUoutM, PCplusImmE, r2M;
 wire [31:0] srcA,srcB, ALUoutE, pc, r1, r2;
 wire branchE;
 
-assign pc = (JALRctrlE) ? PCE : r1E;
+assign pc = (JALRctrlE) ? PCE : r1;
 assign PCplusImmE  = pc + immE;
 assign srcA = (SrcASelE[1]) ? ((SrcASelE[0]) ? r1 : 32'bz) : ((SrcASelE[0]) ? 32'b0 : PCE) ;
 assign srcB = (SrcBSelE[1]) ? ((SrcBSelE[0]) ? 32'd0 : 32'd4) : ((SrcBSelE[0]) ? immE : r2) ;
@@ -62,7 +62,7 @@ always @(posedge clk or posedge rst) begin
             reg_MemtoRegE <= MemtoRegE;
             reg_strCtrlE <= strCtrlE;
             reg_rdE <= rdE;
-            reg_r2E <= r2E;
+            reg_r2E <= r2;
             reg_ALUoutE <= ALUoutE;
         end
     end

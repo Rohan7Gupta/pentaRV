@@ -11,7 +11,7 @@ reg [31:0] mem [1023:0];
 integer i;
 integer dump_file;
 
-always @ (posedge clk) begin
+always @ (negedge clk) begin
     if (we) begin
         if (mem_wmask[0]) mem[A][ 7:0 ] <= wd[ 7:0 ];
         if (mem_wmask[1]) mem[A][15:8 ] <= wd[15:8 ];
