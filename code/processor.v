@@ -34,16 +34,17 @@ wire [31:0] resultW;
 
 //hazard 
 wire [1:0] ForwardAE,ForwardBE;
+wire flush;
 
 //writeback
-fetch fetch_unit(clk,rst,PCsrcE,PCplusImmE,PCD, instrD);
+fetch fetch_unit(clk,rst,flush,PCsrcE,PCplusImmE,PCD, instrD);
 
-decode decode_unit(clk,rst, instrD, PCD, RegWriteW, rdW, resultW, 
+decode decode_unit(clk,rst,flush, instrD, PCD, RegWriteW, rdW, resultW, 
                 strCtrlE, RegWriteE,MemWriteE, MemtoRegE, PCBranchE, 
                 ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE, 
                 JALRctrlE, rs1E, rs2E);
 
-execute execute_unit(clk,rst,resultW, ForwardAE, ForwardBE, JALRctrlE,
+execute execute_unit(clk,(rst | flush ),resultW, ForwardAE, ForwardBE, JALRctrlE,
                 strCtrlE, RegWriteE, MemWriteE, MemtoRegE, PCBranchE, 
                 ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE,
                 strCtrlM, RegWriteM, MemWriteM, MemtoRegM,
@@ -55,7 +56,7 @@ memory memory_unit(clk, rst,dump, strCtrlM, RegWriteM, MemWriteM, MemtoRegM,
 
 writeback writeback_unit( ALUoutW, ReadDataW, MemtoRegW,resultW);
 
-hazard hazard_unit(rst, RegWriteM, RegWriteW, rdM, rdW, rs1E, rs2E, 
-                    ForwardAE, ForwardBE);
+hazard hazard_unit(clk,rst,PCsrcE, RegWriteM, RegWriteW, rdM, rdW, rs1E, rs2E, 
+                    ForwardAE, ForwardBE,flush);
 
 endmodule

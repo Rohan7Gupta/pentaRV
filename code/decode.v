@@ -2,12 +2,12 @@
 `include "immGen.v"
 `include "RegFile.v"
 
-module decode(clk,rst, instrD, PCD, RegWriteW, rdW, resultW, strCtrlE,
+module decode(clk,rst,flush, instrD, PCD, RegWriteW, rdW, resultW, strCtrlE,
 RegWriteE,MemWriteE, MemtoRegE, PCBranchE, ALUopE, SrcASelE, SrcBSelE,
 immE, PCE, r1E, r2E, rdE, JALRctrlE,rs1E,rs2E);
 
 //data path
-input clk,rst,RegWriteW;
+input clk,rst,RegWriteW,flush;
 input [4:0] rdW;
 input [31:0] instrD,PCD,resultW;
 
@@ -78,7 +78,7 @@ Control control(
 
 //pipeline registers
     always @(posedge clk or posedge rst) begin
-        if(rst) begin
+        if(rst | flush) begin
             reg_RegWriteD <= 1'b0;
             reg_SrcASelD <= 2'b01;
             reg_SrcBSelD <= 2'b11;

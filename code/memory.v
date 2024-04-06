@@ -13,6 +13,7 @@ output [31:0] ALUoutW, ReadDataW;
 output [4:0] rdW; 
 output MemtoRegW, RegWriteW;
 
+
 wire [31:0] ReadDataM;
 wire [3:0] mem_wmask;
 
