@@ -2,8 +2,9 @@
 `include "immGen.v"
 `include "RegFile.v"
 
-module decode(clk,rst, instrD, PCD, RegWriteW, rdW, resultW, strCtrlE, RegWriteE, 
-MemWriteE, MemtoRegE, PCBranchE, ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE, JALRctrlE);
+module decode(clk,rst, instrD, PCD, RegWriteW, rdW, resultW, strCtrlE,
+RegWriteE,MemWriteE, MemtoRegE, PCBranchE, ALUopE, SrcASelE, SrcBSelE,
+immE, PCE, r1E, r2E, rdE, JALRctrlE,rs1E,rs2E);
 
 //data path
 input clk,rst,RegWriteW;
@@ -18,7 +19,7 @@ output [2:0] strCtrlE;
 
 //data path
 output [31:0] immE,PCE,r1E,r2E;
-output [4:0] rdE;
+output [4:0] rdE,rs1E,rs2E;
 
 //internal wire control
 wire [2:0]immSelD,strCtrlD;
@@ -28,14 +29,15 @@ wire [1:0] SrcASelD,SrcBSelD;
 
 //internal wire data path
 wire [31:0] immD,r1D,r2D;
-// wire [4:0] rdD;
-// assign rdD=instrD[11:7];
+wire [4:0] rs1D, rs2D;
+assign rs1D = instrD[19:15];
+assign rs2D = instrD[24:20];
 
 //pipeline registers
 reg reg_RegWriteD,reg_MemWriteD,reg_MemtoRegD,reg_PCBranchD, reg_JALRctrlD;
 reg [3:0] reg_ALUopD;
 reg [31:0] reg_r1D,reg_r2D,reg_immD,reg_PCD;
-reg [4:0] reg_rdD;
+reg [4:0] reg_rdD,reg_rs1D,reg_rs2D;
 reg [1:0] reg_SrcASelD,reg_SrcBSelD;
 reg [2:0] reg_strCtrlD;
 
@@ -43,8 +45,8 @@ reg [2:0] reg_strCtrlD;
 RegFile regs(
     .clk(clk),
     .rst(rst),
-    .rs1(instrD[19:15]),
-    .rs2(instrD[24:20]),
+    .rs1(rs1D),
+    .rs2(rs2D),
     .rd(rdW),
     .we(RegWriteW),
     .wd(resultW),
@@ -91,6 +93,8 @@ Control control(
             reg_rdD <= 5'h00;
             reg_PCD <= 32'h00000000; 
             reg_JALRctrlD <= 1'b1;
+            reg_rs1D <= 5'b0;
+            reg_rs2D <= 5'b0;
 
         end
         else begin
@@ -108,6 +112,8 @@ Control control(
             reg_rdD <= instrD[11:7];
             reg_PCD <= PCD;
             reg_JALRctrlD <= JALRctrlD;
+            reg_rs1D <= rs1D;
+            reg_rs2D <= rs2D;
         end
     end
 
@@ -126,5 +132,7 @@ assign r1E = reg_r1D;
 assign r2E = reg_r2D;
 assign rdE = reg_rdD;
 assign JALRctrlE = reg_JALRctrlD;
+assign rs1E = reg_rs1D;
+assign rs2E = reg_rs2D;
 
 endmodule
