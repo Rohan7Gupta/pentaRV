@@ -1,6 +1,8 @@
 # rv32i 5 Stage Pipeline Core
 ## by Rohan Gupta
 
+Special thanks to Edwin Joy sir and Pragnajit Roy sir for their guidance and support.
+
 #### rv32i unpriviledged
 #### Data memory byte accesible
 i.e for work access, memory in multiples of 4, for half word access, memory in multiples of 2
