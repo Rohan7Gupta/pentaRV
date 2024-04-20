@@ -3,16 +3,15 @@
 
 Special thanks to Edwin Joy sir and Pragnajit Roy sir for their guidance and support.
 
-#### rv32i unpriviledged
-#### Data memory byte accesible
+#### rv32i unpriviledged 
+#### Data memory byte accesible (little endian)
+
 i.e for work access, memory in multiples of 4, for half word access, memory in multiples of 2
 
 - 00000000 -- NOP
 - (fence coded as nop, 1 hart system)
 - ecall, ebreak not yet implemented
-- All instructions working (rv32i) (excluding environment)
-
-- All instructions working (rv32i) (excluding environment and fence) & resolved for hazards
+- csr to be implemented
 - Data forwarding implemented
 - Pipeline flush implemented (only decode)
 - branch resolved in execute stage
