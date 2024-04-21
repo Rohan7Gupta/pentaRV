@@ -3,10 +3,11 @@
 
 Special thanks to Edwin Joy sir and Pragnajit Roy sir for their guidance and support.
 
+# run make (debian) or mingw32-make (windows) in code directory
+
 #### rv32i unpriviledged 
 #### Data memory byte accesible (little endian)
-
-i.e for work access, memory in multiples of 4, for half word access, memory in multiples of 2
+i.e for word access, memory in multiples of 4, for half word access, memory in multiples of 2
 
 - (fence coded as nop, 1 hart system)
 - ecall, ebreak not yet implemented
