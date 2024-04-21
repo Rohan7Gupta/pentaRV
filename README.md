@@ -3,7 +3,7 @@
 
 Special thanks to Edwin Joy sir and Pragnajit Roy sir for their guidance and support.
 
-# run make (debian) or mingw32-make (windows) in code directory
+### run make (debian) or mingw32-make (windows) in code directory
 
 #### rv32i unpriviledged 
 #### Data memory byte accesible (little endian)
