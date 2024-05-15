@@ -26,6 +26,11 @@ assign readInstr = (rst) ? 32'd0 : mem[addrInstr];
 
 
 initial begin
+// Initialize all memory cells to zero by default
+        for (i = 0; i < 65536; i = i + 1) begin
+            mem[i] = 32'd0;
+        end
+
     $readmemh("memfile.hex",mem);
     mem[4096] = 32'h00000000;
     mem[4097] = 32'h08000000;

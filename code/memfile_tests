@@ -192,3 +192,31 @@ ff1ff0ef  jal x1, -16
 00258593
 00258593
 00b105a3
+
+00: 00004137    lui x2, 16384
+04: 00710503    lb x10, 7(x2)
+08: 00258593    addi x11, x11, 2
+0c: 00851513    slli x10, x10, 8
+10: 00a00963    beq x10, 19
+14: ff5ff0ef    jal x1, -12
+18: 00158593    addi x11, x11, 1
+1c: 00158593
+20: 00158593
+24: 00158593
+28: 00b105a3    sb x11, 11(x2)
+
+error when 08 and 0c instruction interchanged due to wrong forwarding 
+(need NOP between load and R/I)(software solution needed) (architecture hazard)
+00: 00004137    lui x2, 16384
+04: 00710503    lb x10, 7(x2)
+
+08: 00851513    slli x10, x10, 8
+0c: 00258593    addi x11, x11, 2
+
+10: 00a00963    beq x10, 19
+14: ff5ff0ef    jal x1, -12
+18: 00158593    addi x11, x11, 1
+1c: 00158593
+20: 00158593
+24: 00158593
+28: 00b105a3    sb x11, 11(x2)
