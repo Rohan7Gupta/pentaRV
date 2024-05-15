@@ -1,12 +1,11 @@
 `include "PC_module.v"
-`include "IMEM.v"
-module fetch(clk,rst,flush, PCsrcE,PCplusImmE,PCD, instrD);
+module fetch(clk,rst,flush, PCsrcE,PCplusImmE,PCD, instrD, PCF, instrF);
 input clk, rst, flush;
 input PCsrcE;
-input [31:0] PCplusImmE;
-output [31:0] instrD, PCD;
+input [31:0] PCplusImmE, instrF;
+output [31:0] instrD, PCD, PCF;
 
-wire [31:0] PCF, PCplus4F,instrF, nextPCF, four;
+wire [31:0]  PCplus4F,instrF, nextPCF, four;
 reg [31:0] reg_instrF, reg_PCF;
 
 PC_Module pc(
@@ -14,12 +13,6 @@ PC_Module pc(
     .rst(rst),
     .PC(PCF),
     .nextPC(nextPCF)
-    );
-
-IMEM imem(
-    .rst(rst),
-    .addr(PCF),
-    .readData(instrF)
     );
 
 assign nextPCF = (PCsrcE)? PCplusImmE:PCplus4F;

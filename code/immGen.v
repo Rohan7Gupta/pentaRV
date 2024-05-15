@@ -9,7 +9,7 @@ assign Uimm={    instrD[31],   instrD[30:12], {12{1'b0}}};//U type immediate
 assign Iimm={{21{instrD[31]}}, instrD[30:20]};//I type immediate
 assign Simm={{21{instrD[31]}}, instrD[30:25],instrD[11:7]};//Stype immediate
 assign Bimm={{20{instrD[31]}}, instrD[7], instrD[30:25],instrD[11:8],1'b0};//B type immediate
-assign Jimm={ {12{instrD[31]}}, instrD[19:12], instrD[20], instrD[30:21], 1'b0 }; //jal
+assign Jimm={ {12{instrD[31]}}, instrD[19:12], instrD[20], instrD[30:25],instrD[24:21], 1'b0 }; //jal
 assign Limm={{21{instrD[31]}}, instrD[30:20]}; //L type
 reg[31:0] imm;
 always @(*) begin

@@ -15,7 +15,7 @@ initial begin
     rst =1 ; dump=0;
     #11 rst=0;
     #1000 rst=1; dump=1;
-    #100 $finish;
+    #5 $finish;
 end
 
 initial begin

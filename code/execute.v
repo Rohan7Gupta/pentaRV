@@ -1,11 +1,11 @@
 `include "alu.v"
 
-module execute(clk,rst, resultW, ForwardAE, ForwardBE, JALRctrlE,strCtrlE, RegWriteE, MemWriteE, MemtoRegE, PCBranchE, 
+module execute(clk,rst,flush, resultW, ForwardAE, ForwardBE, JALRctrlE,strCtrlE, RegWriteE, MemWriteE, MemtoRegE, PCBranchE, 
                 ALUopE, SrcASelE, SrcBSelE, immE, PCE, r1E, r2E, rdE,
                 strCtrlM, RegWriteM, MemWriteM, MemtoRegM,
                 ALUoutM,PCplusImmE,rdM,r2M, PCsrcE);
 
-input clk,rst,JALRctrlE,RegWriteE, MemWriteE, MemtoRegE, PCBranchE;
+input clk,rst,flush,JALRctrlE,RegWriteE, MemWriteE, MemtoRegE, PCBranchE;
 input [1:0] SrcASelE,SrcBSelE, ForwardAE, ForwardBE;
 input [2:0] strCtrlE;
 input [3:0] ALUopE;
@@ -46,7 +46,7 @@ reg [4:0]reg_rdE;
 reg [31:0]reg_ALUoutE,reg_r2E; 
 
 always @(posedge clk or posedge rst) begin
-        if(rst) begin
+        if(rst | flush) begin
             reg_RegWriteE <= 1'b0;
             reg_MemWriteE <= 1'b0;
             reg_MemtoRegE <= 1'b0;
