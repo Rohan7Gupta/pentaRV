@@ -1,14 +1,15 @@
 # rv32i 5 Stage Pipeline Core
 ## by Rohan Gupta
-
-
-
-### run make (debian) or mingw32-make (windows) in code directory
-
 #### rv32i unpriviledged 
-#### Data memory byte accesible (little endian)
+
+Unified memory byte accesible (little endian)
 i.e for word access, memory in multiples of 4, for half word access, memory in multiples of 2
 
+256kB memory
+16kB code memory
+remaining data memory
+
+### run make (debian) or mingw32-make (windows) in code directory
 - (fence coded as nop, 1 hart system)
 - ecall, ebreak not yet implemented
 - csr to be implemented
