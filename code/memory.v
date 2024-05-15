@@ -1,26 +1,24 @@
-`include "DMEM.v"
-
-module memory(clk, rst,dump, strCtrlM, RegWriteM, MemWriteM, MemtoRegM,
+module memory(clk, rst, strCtrlM, RegWriteM, MemtoRegM,
                 ALUoutM, rdM, r2M, ALUoutW, ReadDataW, rdW, 
-                MemtoRegW, RegWriteW);
+                MemtoRegW, RegWriteW,mem_wmask,mem_wdata, mem_rdata);
 
-input clk, rst,dump, RegWriteM, MemWriteM, MemtoRegM;
+input clk, rst, RegWriteM, MemtoRegM;
 input [2:0] strCtrlM;
-input [31:0] ALUoutM, r2M;
+input [31:0] ALUoutM, r2M, mem_rdata;
 input [4:0] rdM;
 
-output [31:0] ALUoutW, ReadDataW;
+output [31:0] ALUoutW, ReadDataW, mem_wdata;
 output [4:0] rdW; 
 output MemtoRegW, RegWriteW;
-
+output wire [3:0] mem_wmask;
 
 wire [31:0] ReadDataM;
-wire [3:0] mem_wmask;
+
 
 wire mem_byteAccess, mem_halfwordAccess, LOAD_sign;
 wire [15:0] LOAD_halfword;
 wire  [7:0] LOAD_byte;
-wire [31:0] LOAD_data, mem_rdata, mem_wdata;
+wire [31:0] LOAD_data;
 
 
 //store control
@@ -41,18 +39,6 @@ assign mem_wmask = mem_byteAccess ?
 	mem_halfwordAccess ?
 	(ALUoutM[1] ? 4'b1100 : 4'b0011) :
     4'b1111;
-
-
-DMEM dmem(
-    .clk(clk),
-    .rst(rst),
-    .dump(dump),
-    .we(MemWriteM),
-    .mem_wmask(mem_wmask),
-    .wd(mem_wdata),
-    .A(ALUoutM[31:2]),
-    .rd(mem_rdata)
-);
 
 //load control
 
