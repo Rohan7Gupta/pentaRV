@@ -31,6 +31,5 @@ remaining data memory
 - https://github.com/merldsu/RISCV_Pipeline_Core.git
 - https://github.com/Moo-osama/RISCV-verilog.git
 - swapforth/JI
+- https://luplab.gitlab.io/rvcodecjs/#q=xor+x10,+x10,+x11&abi=false&isa=RV32I
 
-#### Assembler used for testing
-https://github.com/josh7670/Risc-V-Assembly-to-Hex
