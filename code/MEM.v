@@ -17,17 +17,21 @@ if (!rst) begin
         cause = 5'd0;
         mtval = addrInstr;
     end
-    else if((addrData[0]!=0 ) && (we)) begin //Store address misaligned
+    else if((((addrData[0]!=0 )&&((mem_wmask === 4'b0011) || (mem_wmask === 4'b1100))) || 
+            ((addrData[1:0] !=0)&& (mem_wmask === 4'b1111))) && (we)) begin 
+                //Store address misaligned for sw and sh
         exception = 1;
         cause = 5'd6;
         mtval = addrData;
     end
-    else if((addrData[0]!=0 ) && (MemtoRegM)) begin //load address misaligned
+    else if((((addrData[0]!=0 )&&((mem_wmask == 4'b0011) || (mem_wmask == 4'b1100))) || 
+            ((addrData[1:0] !=0)&& (mem_wmask == 4'b1111))) && (MemtoRegM)) begin 
+                //load address misaligned for lw and lh
         exception = 1;
         cause = 5'd4;
         mtval = addrData;
     end
-    else if(|readInstr === 1'bx) begin //instruction access fault
+    else if(|readInstr === 1'bx ) begin //instruction access fault
         exception = 1;
         cause = 5'd1;
         mtval = addrInstr;
@@ -59,6 +63,10 @@ always @ (negedge clk) begin
         if (mem_wmask[1]) mem[addrData][15:8 ] <= wd[15:8 ];
         if (mem_wmask[2]) mem[addrData][23:16] <= wd[23:16];
         if (mem_wmask[3]) mem[addrData][31:24] <= wd[31:24];  
+    end
+end
+always @(!clk) begin 
+    if(we) begin
         $display("Memory write");
         $display("Simtime = %g, addr(memory cell decimal) = %d, data(hex) = %h",$time,addrData,mem[addrData]);
     end
@@ -76,8 +84,8 @@ initial begin
 
     $readmemh("memfile.hex",mem);
     mem[2048] = 32'h73; //ebreak
-    mem[4096] = 32'h00000000;
-    mem[4097] = 32'h08000000;
+    mem[4096] = 32'h87654321;
+    mem[4097] = 32'h08345678;
     mem[5000]= 32'h84755779;
 
     //dump file for testing

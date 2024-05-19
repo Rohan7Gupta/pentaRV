@@ -92,17 +92,17 @@ Control control(
 );
 
 //exception
-always @ * begin
-if(!rst) begin
+always @ (*) begin
+if((!rst | !flush) && (instrD != 32'b0)) begin
     if((opcode != `ALUreg) && (opcode != `ALUimm) && (opcode != `Branch) && (opcode != `JALR) && 
     (opcode != `JAL) && (opcode != `AUIPC) && (opcode != `LUI) && (opcode != `Load) && 
-    (opcode != `Store) && (opcode != `SYSTEM)) 
+    (opcode != `Store) && (opcode != `SYSTEM) ) 
     begin
         exception = 1;
         cause = 2; //illegal code
         mtval = {25'b0,opcode};
     end
-    if( (opcode == `Branch) && ((funct3 == 3'b010) || (funct3 == 3'b011) )) begin
+    else if( (opcode == `Branch) && ((funct3 == 3'b010) || (funct3 == 3'b011) )) begin
         exception = 1;
         cause = 2;
         mtval = {opcode,20'b0,funct3};
@@ -112,7 +112,7 @@ if(!rst) begin
         cause = 2;
         mtval = {opcode,20'b0,funct3};
     end
-    else if( (opcode == `Store) && ((funct3 != 3'b000) || (funct3 != 3'b001) || (funct3 != 3'b010) )) begin
+    else if( (opcode == `Store) && ((funct3 != 3'b000) && (funct3 != 3'b001) && (funct3 != 3'b010) )) begin
         exception = 1;
         cause = 2;
         mtval = {opcode,20'b0,funct3};
