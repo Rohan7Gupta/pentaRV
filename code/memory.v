@@ -1,8 +1,8 @@
-module memory(clk, rst, strCtrlM, RegWriteM, MemtoRegM,
+module memory(clk, rst, flush, strCtrlM, RegWriteM, MemtoRegM,
                 ALUoutM, rdM, r2M, ALUoutW, ReadDataW, rdW, 
                 MemtoRegW, RegWriteW,mem_wmask,mem_wdata, mem_rdata);
 
-input clk, rst, RegWriteM, MemtoRegM;
+input clk, rst, flush, RegWriteM, MemtoRegM;
 input [2:0] strCtrlM;
 input [31:0] ALUoutM, r2M, mem_rdata;
 input [4:0] rdM;
@@ -76,7 +76,7 @@ reg [4:0] reg_rdM;
 reg reg_MemtoRegM, reg_RegWriteM;
 
 always @(posedge clk or posedge rst) begin
-        if(rst) begin
+        if(rst | flush) begin
             reg_RegWriteM <= 1'b0;
             reg_MemtoRegM <= 1'b0;
             reg_rdM <= 5'h00;
