@@ -18,7 +18,7 @@ remaining data memory
 - branch resolved in execute stage
 
 ## Architecture
-![architecture]([https://github.com/Rohan7Gupta/pentaRV/blob/main/RV32%205-stage%20pipeline%20data-path%20(7).jpg])
+![architecture](https://github.com/Rohan7Gupta/pentaRV/blob/main/RV32%205-stage%20pipeline%20data-path%20(7).jpg)
 
 
 
