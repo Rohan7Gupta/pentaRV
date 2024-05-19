@@ -2,20 +2,28 @@
 ## by Rohan Gupta
 #### rv32i unpriviledged 
 
-Unified memory byte accesible (little endian)
+### memory
+####Unified memory byte accesible (little endian)
 i.e for word access, memory in multiples of 4, for half word access, memory in multiples of 2
 
 256kB memory
-16kB code memory
-remaining data memory
+0-8 kB code memory
+8 - 16 kB vector table + reserve 
+16kB+ data memory
 
 ### run make (debian) or mingw32-make (windows) in code directory
-- (fence coded as nop, 1 hart system)
-- ecall, ebreak not yet implemented
-- csr to be implemented
-- Data forwarding implemented
-- Pipeline flush implemented (only decode)
-- branch resolved in execute stage
+- no fence as 1 hart system
+- 5 stage pipeline with hazard handling implemented
+--- (note : need 1 nop if load immediately followed by R/I accessing same register)
+- ecall, ebreak end execution
+- csr implemented for exception and interrupt
+--- csr manipulation instruction to be implemnted
+- exception handling implemented for cause 0 - 7 (defined in priviledged manual)
+- interrupt handling to be implmented
+- exception leads to IVT which contains ebreak and ends execution immediately (can be modified later)
+- mret to be implemented
+- plans to implement memory mapped IO
+
 
 ## Architecture
 ![architecture](https://github.com/Rohan7Gupta/pentaRV/blob/main/RV32%205-stage%20pipeline%20data-path%20(7).jpg)
