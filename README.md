@@ -1,6 +1,6 @@
 # rv32i 5 Stage Pipeline Core
 ## by Rohan Gupta
-#### rv32i unpriviledged 
+### RV32I
 
 ### memory
 ####Unified memory byte accesible (little endian)
