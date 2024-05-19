@@ -14,7 +14,7 @@ module hazard(clk,rst,PCsrcE, RegWriteM, RegWriteW, rdM, rdW, rs1E, rs2E, Forwar
                        ((RegWriteM == 1'b1) & (rdM != 5'h00) & (rdM == rs2E)) ? 2'b10 :
                        ((RegWriteW == 1'b1) & (rdW != 5'h00) & (rdW == rs2E)) ? 2'b01 : 2'b00;
 
-    always @(negedge clk) begin
+    always @(negedge clk) begin //flush
         flush <= PCsrcE;
     end
     always @(posedge clk) begin

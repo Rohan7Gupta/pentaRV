@@ -1,12 +1,13 @@
 `include "PC_module.v"
-module fetch(clk,rst,flush, PCsrcE,PCplusImmE,PCD, instrD, PCF, instrF);
-input clk, rst, flush;
+module fetch(clk,rst,flush, epc_taken, vector_pc, PCsrcE,PCplusImmE,PCD, instrD, PCF, instrF);
+input clk, rst, flush, epc_taken;
 input PCsrcE;
-input [31:0] PCplusImmE, instrF;
+input [31:0] PCplusImmE, instrF, vector_pc;
 output [31:0] instrD, PCD, PCF;
 
-wire [31:0]  PCplus4F,instrF, nextPCF, four;
+wire [31:0]  PCplus4F,instrF, nextPCF, four, normal_nextPCF;
 reg [31:0] reg_instrF, reg_PCF;
+
 
 PC_Module pc(
     .clk(clk),
@@ -15,9 +16,11 @@ PC_Module pc(
     .nextPC(nextPCF)
     );
 
-assign nextPCF = (PCsrcE)? PCplusImmE:PCplus4F;
+
 assign four = 32'd4;
 assign PCplus4F = PCF + four;
+assign normal_nextPCF = (PCsrcE)? PCplusImmE:PCplus4F;
+assign nextPCF = (epc_taken)? vector_pc: normal_nextPCF;
 
 //pipeline registers
 always @ (posedge clk or posedge rst) begin //rst used to implement stall

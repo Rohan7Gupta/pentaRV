@@ -4,7 +4,7 @@
 
 module decode(clk,rst,flush, instrD, PCD, RegWriteW, rdW, resultW, strCtrlE,
 RegWriteE,MemWriteE, MemtoRegE, PCBranchE, ALUopE, SrcASelE, SrcBSelE,
-immE, PCE, r1E, r2E, rdE, JALRctrlE,rs1E,rs2E);
+immE, PCE, r1E, r2E, rdE, JALRctrlE,rs1E,rs2E, exception, cause, mtval);
 
 //data path
 input clk,rst,RegWriteW,flush;
@@ -21,11 +21,20 @@ output [2:0] strCtrlE;
 output [31:0] immE,PCE,r1E,r2E;
 output [4:0] rdE,rs1E,rs2E;
 
+//exception
+output reg exception;
+output reg [4:0] cause;
+output reg [31:0] mtval;
+
 //internal wire control
 wire [2:0]immSelD,strCtrlD;
 wire RegWriteD,MemWriteD,PCBranchD,MemtoRegD, JALRctrlD;
 wire [3:0] ALUopD;
 wire [1:0] SrcASelD,SrcBSelD;
+
+wire [6:0] opcode = instrD[6:0];
+wire [2:0] funct3 = instrD[14:12];
+wire [6:0] funct7 = instrD[31:25];
 
 //internal wire data path
 wire [31:0] immD,r1D,r2D;
@@ -41,6 +50,12 @@ reg [4:0] reg_rdD,reg_rs1D,reg_rs2D;
 reg [1:0] reg_SrcASelD,reg_SrcBSelD;
 reg [2:0] reg_strCtrlD;
 
+//ecall / ebreak => end program
+always @(*) begin
+    if(instrD === 32'h73) begin
+        $finish;
+    end
+end
 
 RegFile regs(
     .clk(clk),
@@ -61,9 +76,9 @@ immGen immG(
 );
 
 Control control(
-    .opcode(instrD[6:0]),
-    .funct3(instrD[14:12]),
-    .funct7(instrD[30]),
+    .opcode(opcode),
+    .funct3(funct3),
+    .funct7(funct7[6]),
     .strCtrlD(strCtrlD),
     .RegWriteD(RegWriteD),
     .MemWriteD(MemWriteD),
@@ -75,6 +90,53 @@ Control control(
     .immSelD(immSelD),
     .JALRctrlD(JALRctrlD)
 );
+
+//exception
+always @ * begin
+if(!rst) begin
+    if((opcode != `ALUreg) && (opcode != `ALUimm) && (opcode != `Branch) && (opcode != `JALR) && 
+    (opcode != `JAL) && (opcode != `AUIPC) && (opcode != `LUI) && (opcode != `Load) && 
+    (opcode != `Store) && (opcode != `SYSTEM)) 
+    begin
+        exception = 1;
+        cause = 2; //illegal code
+        mtval = {25'b0,opcode};
+    end
+    if( (opcode == `Branch) && ((funct3 == 3'b010) || (funct3 == 3'b011) )) begin
+        exception = 1;
+        cause = 2;
+        mtval = {opcode,20'b0,funct3};
+    end
+    else if( (opcode == `Load) && ((funct3 == 3'b011) || (funct3 == 3'b110) || (funct3 == 3'b111) )) begin
+        exception = 1;
+        cause = 2;
+        mtval = {opcode,20'b0,funct3};
+    end
+    else if( (opcode == `Store) && ((funct3 != 3'b000) || (funct3 != 3'b001) || (funct3 != 3'b010) )) begin
+        exception = 1;
+        cause = 2;
+        mtval = {opcode,20'b0,funct3};
+    end
+    else if ((opcode == `ALUreg) && ((funct3 == 3'b000) || (funct3 == 3'b101)) && ((funct7 == 7'b0100000 )|| (funct7 == 7'b0)) ) begin
+        exception = 1;
+        cause = 2;
+        mtval = {opcode,5'b0, funct3,8'b0, funct7};
+    end
+    else if ( (opcode == `ALUimm) && ((funct3 == 3'b001) ) && (funct7 != 7'b0) ) begin
+        exception = 1;
+        cause = 2;
+        mtval = {opcode,5'b0, funct3,8'b0, funct7};
+    end
+    else if ( (opcode == `ALUimm) && (funct3 == 3'b101) && ((funct7 != 7'b0000000)||(funct7 != 7'b0100000)) ) begin
+        exception = 1;
+        cause = 2;
+        mtval = {opcode,5'b0, funct3,8'b0, funct7};
+    end
+    else begin
+        exception = 0;
+    end
+end
+end
 
 //pipeline registers
     always @(posedge clk or posedge rst) begin

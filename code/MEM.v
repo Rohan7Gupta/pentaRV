@@ -1,11 +1,52 @@
-module MEM (clk,rst,we,dump,mem_wmask,addrData,addrInstr,wd,rd,readInstr);
+`timescale 1ns/1ps 
+module MEM (clk,rst,we,MemtoRegM,dump,mem_wmask,addrData,addrInstr,wd,rd,readInstr,exception, cause, mtval);
 
-input clk, rst, we, dump;
+input clk, rst, we, dump, MemtoRegM;
 input [3:0] mem_wmask;
-input [31:2] addrData,addrInstr; 
+input [31:0] addrData,addrInstr; 
 input [31:0]wd;
 output [31:0] rd, readInstr;
-
+output reg exception;
+output reg [4:0] cause;
+output reg [31:0] mtval;
+//exception
+always @ * begin
+if (!rst) begin
+    if(addrInstr[1:0]!=0) begin //instruction address misaligned
+        exception = 1;
+        cause = 5'd0;
+        mtval = addrInstr;
+    end
+    else if((addrData[0]!=0 ) && (we)) begin //Store address misaligned
+        exception = 1;
+        cause = 5'd6;
+        mtval = addrData;
+    end
+    else if((addrData[0]!=0 ) && (MemtoRegM)) begin //load address misaligned
+        exception = 1;
+        cause = 5'd4;
+        mtval = addrData;
+    end
+    else if(|readInstr === 1'bx) begin //instruction access fault
+        exception = 1;
+        cause = 5'd1;
+        mtval = addrInstr;
+    end
+    else if (((|rd === 1'bx) || (|rd === 1'bz)) && (MemtoRegM)) begin 
+        exception = 1; //Load access fault
+        cause = 5'd5;
+        mtval = addrData;
+    end
+    else if( (we) && ( (|wd === 1'bx) || (|wd === 1'bz))) begin
+        exception = 1;//store access fault
+        cause = 5'd7;
+        mtval = addrData;
+    end
+    else begin
+        exception = 0;
+    end
+end
+end
 
 reg [31:0] mem [65536:0];
 
@@ -18,11 +59,13 @@ always @ (negedge clk) begin
         if (mem_wmask[1]) mem[addrData][15:8 ] <= wd[15:8 ];
         if (mem_wmask[2]) mem[addrData][23:16] <= wd[23:16];
         if (mem_wmask[3]) mem[addrData][31:24] <= wd[31:24];  
+        $display("Memory write");
+        $display("Simtime = %g, addr(memory cell decimal) = %d, data(hex) = %h",$time,addrData,mem[addrData]);
     end
 end
 
-assign rd = (rst) ? 32'd0 : mem[addrData];
-assign readInstr = (rst) ? 32'd0 : mem[addrInstr];
+assign rd = (rst) ? 32'd0 : mem[addrData[31:2]];
+assign readInstr = (rst) ? 32'd0 : mem[addrInstr[31:2]];
 
 
 initial begin
@@ -32,6 +75,7 @@ initial begin
         end
 
     $readmemh("memfile.hex",mem);
+    mem[2048] = 32'h73; //ebreak
     mem[4096] = 32'h00000000;
     mem[4097] = 32'h08000000;
     mem[5000]= 32'h84755779;

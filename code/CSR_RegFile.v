@@ -1,5 +1,5 @@
 
-
+`timescale 1ns / 1ps
 module CSR_RegFile(
     input wire clk, rst, csr_wr, csr_rd, is_mret,
     input wire [11:0] csr_addr,
@@ -14,7 +14,6 @@ module CSR_RegFile(
     reg [31:0] mvendorid = 0, marchid = 0 ;//processor information
     reg [31:0] mepc, mtvec , mcause, mtval;//exception
     reg [31:0] mstatus = 0, mie = 0, mip = 0;//interrupt not implemented
-    
     initial begin
         mtvec = {30'd2048, 2'b0};
     end
@@ -27,6 +26,8 @@ module CSR_RegFile(
             mstatus <= 0; //set vale according to requirement
             mie     <= 0; //set vale according to requirement
             mip     <= 0; //set vale according to requirement
+            next_pc <= 0;
+            epc_taken <= 0;
         end
         else if (csr_wr) begin
             case (csr_addr)
@@ -56,13 +57,15 @@ module CSR_RegFile(
         end
     end
 
-    always @(*) begin
+    always @(negedge clk) begin
         if (exception) begin
             mepc = PC;
             mcause = {27'b0, cause};
             next_pc = {mtvec[31:2], 2'b0};
             mtval = trap_val;//address of faulty instruction
             epc_taken = 1;
+            $display("Exception alert, atleast learn to write proper code");
+            $monitor("Simtime = %g, mepc = %h, mcause = %h, mtval = %b, next_pc = %h", $time , mepc, mcause, mtval, next_pc);
         end
         else if (interrupt ) begin //vectored interrupt
             mepc = PC;
@@ -75,11 +78,11 @@ module CSR_RegFile(
                 next_pc = {mtvec[31:2],2'b0};
             end
             epc_taken = 1;
+            
         end 
         else if (is_mret) begin
             next_pc = mepc;
         end
         else epc_taken = 0;
     end
-
 endmodule

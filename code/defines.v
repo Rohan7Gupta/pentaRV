@@ -21,7 +21,7 @@
 `define     BGE          4'b0101
 `define     BLTU         4'b0110
 `define     BGEU         4'b0111
-`define     jal_jalr          4'b1111 //jal,jalr
+`define     jal_jalr     4'b1111 //jal,jalr
 
 `define     SB           3'b000
 `define     SH           3'b001
@@ -37,4 +37,3 @@
 `define     Load       7'b0000011  // rd <- mem[rs1+Iimm]
 `define     Store      7'b0100011  // mem[rs1+Simm] <- rs2
 `define     SYSTEM     7'b1110011  // system operation 
-`define     NOP        7'b0000000  //No operation 
