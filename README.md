@@ -24,12 +24,15 @@ remaining data memory
 
 ## References
 - based on Harris & Harris 5 stage pipeline MIPS architecture
-- The RISC-V Instruction Set Manual Volume I Unprivileged Architecture
--- Editors: Andrew waterman, Krste Asanovic, SiFive, Inc., CS Division, EECS Department, University of California, Berkeley
- Version 20191214, Revised 20230723
+- The RISC-V Instruction Set Manual Volume I Unprivileged Architecture. Volume I: User-Level ISA Document Version 2.2
+-- Editors: Andrew waterman, Krste Asanovic
+- The RISC-V Instruction Set Manual Volume II: Privileged Architecture Privileged Architecture Version 1.10 Document Version 1.10
+--  Editors: Andrew Waterman, Krste Asanovic 
 - RISC-V Lectures by John's basement on youtube
+- LMARV-1 reboot by Robert Baruch
 - https://github.com/merldsu/RISCV_Pipeline_Core.git
 - https://github.com/Moo-osama/RISCV-verilog.git
 - swapforth/JI
 - https://luplab.gitlab.io/rvcodecjs/#q=xor+x10,+x10,+x11&abi=false&isa=RV32I
+- https://github.com/Fahad-Habib/RISC-V-Pipelined-Processor-with-CSR
 
